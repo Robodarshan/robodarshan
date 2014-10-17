@@ -1,11 +1,21 @@
-{% if error%}
-	<p class="error">
-	{{error}}
-	</p>
-{% endif%}
+{% extends "main/auth.html" %}
 
-{% if message %}
-	<p class="message">
-	{{ message}}
-	</p>
+{% load staticfiles %}
+
+
+{% block title %}
+	Robodarshan: Email Verification.
+{% endblock %}
+
+{% block form-directions %}
+			Email Verification.
+{% endblock %}
+
+{% if success %}
+<a href="{% url 'account:login' %}" title='log in'>
+	<div class="form-submit-wrapper">
+	<span style="">Log in</span>
+	</div>
+</a>
 {% endif %}
+

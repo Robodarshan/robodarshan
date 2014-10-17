@@ -1,25 +1,15 @@
-<a href="{% url 'accounts:profile' %}">Home</a>
-<h1> Login </h1>
+{% extends "main/auth.html" %}
 
-{% if message %}
-<span style="color: green">{{message}}</span>
-{% endif %}
-
-{% if error %}
-<span style="color: red">{{error}}</span>
-{% endif %}
-
-{% if form %}
-<form action="{% url 'accounts:login' %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
+{% load staticfiles %}
 
 {% if next%}
+	{% block form-hidden-fields%}
 	<input type="hidden" name="next" value="{{next}}" />
-{% endif %}
-<input type="submit" value="Submit" />
-</form>
+	{% endblock %}
 {% endif %}
 
-or <a href="{% url 'accounts:register' %}"> Sign Up.</a>
-or <a href="{% url 'accounts:forgot' %}"> Forgot password?</a>
+{% block form-extra-links %}
+	<a href="{% url 'accounts:register' %}"> Sign Up.</a><br/>
+	<a href="{% url 'accounts:forgot' %}"> Forgot password?</a>
+{% endblock%}
+

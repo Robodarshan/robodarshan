@@ -1,18 +1,19 @@
-<a href="{% url 'accounts:profile' %}">Home</a>
-<h1> Registration </h1>
+{% extends "main/auth.html" %}
 
-{% if message %}
-<span style="color: green">{{message}}</span>
-{% endif %}
+{% load staticfiles %}
 
-{% if error %}
-<span style="color: red">{{error}}</span>
-{% endif %}
+{% block title %}
+	Robodarshan: Sign Up.
+{% endblock %}
 
-{% if form %}
-<form action="{% url 'accounts:register' %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
-</form>
-{% endif %}
+{% block form-directions %}
+			Join the makers.
+{% endblock %}
+
+{% block form-target %}{% url "accounts:register" %}{% endblock %}
+
+{% block form-extra-links %}
+	<a href="#"> Terms and Conditions</a><br/>
+{% endblock%}
+
+{% block form-submit-label %}Sign Up{% endblock %}

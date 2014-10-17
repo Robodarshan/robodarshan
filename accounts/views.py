@@ -39,7 +39,7 @@ def register(request):
 			mail_subject = 'Account verification'
 			mail_body = u'http://localhost:8000/accounts/verify/' + email_verification_key + '?u=' + user.profile.uuid
 			send_mail_task.delay( mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
-			return render(request, 'accounts/register.html', {'message': 'successfully registered!'})
+			return render(request, 'accounts/register.html', {'success': 'Registration Complete. Check your mailbox for instructions to verify your email accout.'})
 		else:
 			return render(request, 'accounts/register.html', {'form': form})
 	else: # data not submitter just display the form
@@ -61,16 +61,16 @@ def verify(request):
 			return render(request, 'accounts/verify.html', {'error': 'The email address is not registered'})
 		else:
 			if user.profile.email_verify_key == 'ACTIVATED':
-				return render(request, 'accounts/verify.html', {'message': 'Your email is already verified. :)'})
+				return render(request, 'accounts/verify.html', {'success': 'Your email is already verified. :)'})
 			else:	
 				if user.profile.email_verify_key == email_verification_key:
 					user.profile.email_verify_key = 'ACTIVATED'
 					user.profile.save()
 					user.is_active = True
 					user.save()
-					return render(request, 'accounts/verify.html', {'message': 'successfully verified'})
+					return render(request, 'accounts/verify.html', {'success': 'successfully verified'})
 				else:
-					return render(request, 'accounts/verify.html', {'message': 'invalid verification key'})
+					return render(request, 'accounts/verify.html', {'success': 'invalid verification key'})
 	else:
 		return render(request, 'accounts/verify.html', {'error': 'That doesn\'t seem quite right. Please ckeck the if you have copied the link correctly. '})
 
@@ -100,7 +100,7 @@ def login(request):
 				return render(request, 'accounts/login.html', templateVars)
 	else: # display login form
 		form = forms.LoginForm()
-		templateVars = {'form': form, 'next': 'hello'}
+		templateVars = {'form': form, 'next': reverse('accounts:profile')}
 		if request.GET.has_key('next'):
 			templateVars['next'] = request.GET['next']
 		return render(request, 'accounts/login.html', templateVars)
@@ -133,7 +133,7 @@ def forgot(request):
 					user.profile.save()
 					mail_body = u'http://localhost:8000/accounts/reset/?a=' + password_reset_key + '&z=' + user.profile.uuid
 					send_mail_task.delay( mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
-					return render(request, 'accounts/forgot.html', {'message': 'Instructions have been sent to:' + email})
+					return render(request, 'accounts/forgot.html', {'success': 'Instructions have been sent to: ' + email})
 				else:
 					return render(request, 'accounts/forgot.html', {'error': 'Your account is not active.'})
 			except becAlumnus.DoesNotExist:
@@ -161,7 +161,7 @@ def reset(request):
 			else:
 				user.set_password(new_password)
 				user.save()
-				return render(request, 'accounts/reset.html', {'message': 'Password reset successfully.'})
+				return render(request, 'accounts/reset.html', {'success': 'Password reset successfully.'})
 		else:
 			return render(request, 'accounts/reset.html', {'error': 'Something went wrong.'})
 	else:
@@ -171,7 +171,7 @@ def reset(request):
 			try:
 				user = Profile.objects.get(uuid = uid).user
 			except Profile.DoesNotExist:
-				return render(request, 'accounts/reset.html', {'error': 'Sorry something went wrong. Ensure the link is correct. 1'})
+				return render(request, 'accounts/reset.html', {'error': 'Sorry something went wrong. Ensure the link is correct.'})
 			if user.profile.password_reset_key == 'NULL':
 				return render(request, 'accounts/reset.html', {'error': 'Link expired.'})
 			else:	
@@ -179,6 +179,6 @@ def reset(request):
 					form = forms.ResetForm()
 					return render(request, 'accounts/reset.html', {'form': form, 'uid' : uid, 'password_reset_key': password_reset_key})
 				else:
-					return render(request, 'accounts/reset.html', {'message': 'Invalid key.'})
+					return render(request, 'accounts/reset.html', {'success': 'Invalid key.'})
 		else:
-			return render(request, 'accounts/reset.html', {'error': 'Sorry something went wrong. Ensure the link is correct. 2'})
+			return render(request, 'accounts/reset.html', {'error': 'Sorry something went wrong. Ensure the link is correct.'})

@@ -11,10 +11,13 @@
 		{% endblock %}
 	</title>
 
-	<link href="{% static "main/css/main.css" %}" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,900,700,300,100' rel='stylesheet' type='text/css'>
 	<!-- Bootstrap -->
 	<link href="{% static "main/css/bootstrap.min.css" %}" rel="stylesheet">
+	<!-- Custom Css -->
+	<link href="{% static "main/css/main.css" %}" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,900,700,300,100' rel='stylesheet' type='text/css'>
+
+	{% block css%}{% endblock %}
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,7 +26,9 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
+
 <body>
+	{% block body %}{% endblock %}
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->

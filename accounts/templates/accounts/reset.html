@@ -1,28 +1,24 @@
-<a href="{% url 'accounts:profile' %}">Home</a>
-<h1> Password reset </h1>
+{% extends "main/auth.html" %}
 
-{% if message %}
-<span style="color: green">{{message}}</span>
-{% endif %}
+{% load staticfiles %}
 
-{% if error %}
-<span style="color: red">{{error}}</span>
-{% endif %}
+{% block title %}
+	Robodarshan: Sign Up.
+{% endblock %}
 
-{% if form %}
-<form action="{% url 'accounts:reset' %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
+{% block form-directions %}
+	Create a new Password.
+{% endblock %}
 
-{% if uid%}
-	<input type="hidden" name="uid" value="{{uid}}" />
-{% endif %}
+{% block form-target %}{% url "accounts:reset" %}{% endblock %}
+{% block form-submit-label %}Reset{% endblock %}
 
-{% if uid%}
-	<input type="hidden" name="password_reset_key" value="{{password_reset_key}}" />
-{% endif %}
+{% block form-hidden-fields%}
+	{% if uid%}
+		<input type="hidden" name="uid" value="{{uid}}" />
+	{% endif %}
 
-<input type="submit" value="Submit" />
-</form>
-{% endif %}
-
+	{% if uid%}
+		<input type="hidden" name="password_reset_key" value="{{password_reset_key}}" />
+	{% endif %}
+{% endblock%}

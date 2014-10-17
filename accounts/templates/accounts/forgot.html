@@ -1,20 +1,21 @@
-<a href="{% url 'accounts:profile' %}">Home</a>
-<h1> Password reset </h1>
+{% extends "main/auth.html" %}
 
-{% if message %}
-<span style="color: green">{{message}}</span>
-{% endif %}
+{% load staticfiles %}
 
-{% if error %}
-<span style="color: red">{{error}}</span>
-{% endif %}
 
-{% if form %}
-<form action="{% url 'accounts:forgot' %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
+{% block title %}
+	Robodarshan: Forgot Password.
+{% endblock %}
 
-<input type="submit" value="Submit" />
-</form>
-{% endif %}
+{% block form-directions %}
+			Forgot Your Password?
+{% endblock %}
+
+{% block form-target %}{% url 'accounts:forgot' %}{% endblock %}
+
+{% block form-submit-label %}Send{% endblock %}
+
+{% block extra-instructions%}
+	We will send you an email with instructions.
+{% endblock%}
 
