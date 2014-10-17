@@ -1,2 +1,2 @@
-web: gunicorn blog1.wsgi:application
-worker: celery -A blog1 worker -l info
+web: gunicorn robodarshan.wsgi:application
+worker: celery -A robodarshan worker -l info
