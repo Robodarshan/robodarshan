@@ -1,0 +1,7 @@
+{# <a href="{% url 'accounts:profile' %}">Home</a> #}
+<h1> Profile </h1>
+
+Welcome {{user.get_full_name}} <br/>
+Your mail id is: {{user.email}} <br/>
+
+<a href="{% url 'accounts:logout' %}" title='logout' name='logout'> Logout</a>

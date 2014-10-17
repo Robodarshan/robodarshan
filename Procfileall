@@ -1,0 +1,2 @@
+web: gunicorn blog1.wsgi:application
+worker: celery -A blog1 worker -l info

@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="{% static 'blog/jquery.form.min.js' %}" type="text/javascript"></script>
+		<script src="{% static 'blog/tinymce/jquery.tinymce.min.js' %}" type="text/javascript"></script>
+		<script src="{% static 'blog/editor.js' %}" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'blog/editor.css' %}">
+	</head>
+
+	<body>
+		<div id="form_wrapper">
+			<form action="{% url 'blog:edit' %}" method="post">
+				{% csrf_token %}				
+				<input type='hidden' name='story_id' value='{{id}}' />
+				<div id="input_error"> 
+					{{ form.title.errors }}
+					{{ form.body.errors }}
+				</div>
+				<div id="input_wrapper">
+					{{ form.title }}
+					{{ form.body }}
+				</div>
+				<div id="button_wrapper">
+					<input id="submit_button" class="btn_negative btn_positive btn_right" type="submit" value="Submit" />
+					<button class="btn_negative btn_left">Cancle</button>
+				</div>
+			</form>
+			<form  id='photo_uploader' action="{% url 'blog:edit' %}" method="post">
+				{% csrf_token %}
+				<input type='hidden' name='story_id' value='{{id}}' />
+				<p>Insert Image:</p>
+				<input id='photos' class="btn_negative btn_left" type='file' name='photo' multiple='multiple' />
+				<input class="btn_negative btn_positive btn_right" type="submit" value="Upload" />
+			</form>
+		</div>
+	</body>
+</html>

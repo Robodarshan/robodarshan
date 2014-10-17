@@ -1,0 +1,28 @@
+<a href="{% url 'accounts:profile' %}">Home</a>
+<h1> Password reset </h1>
+
+{% if message %}
+<span style="color: green">{{message}}</span>
+{% endif %}
+
+{% if error %}
+<span style="color: red">{{error}}</span>
+{% endif %}
+
+{% if form %}
+<form action="{% url 'accounts:reset' %}" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+
+{% if uid%}
+	<input type="hidden" name="uid" value="{{uid}}" />
+{% endif %}
+
+{% if uid%}
+	<input type="hidden" name="password_reset_key" value="{{password_reset_key}}" />
+{% endif %}
+
+<input type="submit" value="Submit" />
+</form>
+{% endif %}
+

@@ -1,0 +1,20 @@
+<a href="{% url 'accounts:profile' %}">Home</a>
+<h1> Password reset </h1>
+
+{% if message %}
+<span style="color: green">{{message}}</span>
+{% endif %}
+
+{% if error %}
+<span style="color: red">{{error}}</span>
+{% endif %}
+
+{% if form %}
+<form action="{% url 'accounts:forgot' %}" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+
+<input type="submit" value="Submit" />
+</form>
+{% endif %}
+
