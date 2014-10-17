@@ -1,0 +1,68 @@
+{% extends "main/base_bare.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+	Robodarshan: Login
+{% endblock %}
+
+{% block css %}	
+	<link href="{% static "main/css/auth.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+	<div class="auth-wrapper">
+		<a class="logo" href="/home/"></a>
+		<div class="directions">
+			{% block form-directions %}
+			Let the hacking begin.
+			{% endblock %}
+		</div>
+		<div class="form-wrapper">
+			<form class="Form" action="{% block form-target %}{% url "accounts:login" %}{% endblock %}" method="post">
+				{% csrf_token %}
+				{% block form-error%}
+					{% if error %}
+					<div class="form-errors">
+						{{error}}
+					</div>
+					{% endif %}
+				{% endblock %}
+				{% block form-success%}
+					{% if success %}
+					<div class="form-success">
+						{{success}}
+					</div>
+					{% endif %}
+				{% endblock %}
+				{% if form %}
+					{% block form-input%}
+						{% for field in form %}
+							<div class="form-field-wrapper">
+							<input id="{{ field.auto_id }}" type="{{ field.field.widget.input_type }}" placeholder="{{ field.label }}" name="{{ field.html_name }}" 
+							{% if field.value%}
+							value="{{ field.value }}"
+							{% endif %}
+							/>
+							</div>
+						{% endfor %}
+					{% endblock %}
+					<div class="hidden-fields">
+						{% block form-hidden-fields%}{% endblock%}
+					</div>
+					<div class="form-submit-wrapper">
+						<input type="submit" value="{% block form-submit-label %}Log in{% endblock %}" />
+					</div>
+					<div class="extra-links-wrapper">
+						{% block form-extra-links%}{% endblock %}
+					</div>
+				{% endif %}
+			</form>
+		</div>
+		{% if form %}
+		<div class="extra-instructions">
+			{% block extra-instructions%}{% endblock%}
+		</div>
+		{% endif %}
+	</div>
+{% endblock %}
