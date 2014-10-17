@@ -42,6 +42,72 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
     overflow: hidden;
 }
 
+.form-field-wrapper, .form-submit-wrapper {
+	margin-bottom: 10px;
+	background-clip: padding-box;
+    border-radius: 5px;
+    background-color: #e1e4e6;
+    padding: 0 6%;
+}
+
+.form-field-wrapper > input, .form-submit-wrapper > input {
+	font-size: 18px;
+	height: 45px;
+	line-height: 18px;
+	padding-bottom: 2px;
+	background-color: transparent;
+	border: medium none;
+	box-shadow: none;
+	box-sizing: content-box;
+	color: #32393d;
+	font-family: Roboto,Helvetica,sans-serif;
+	margin: 0;
+	outline: medium none;
+	padding: 0;
+	width: 100%;
+}
+
+.form-submit-wrapper {
+	background-color: #008fd5;
+    float: none;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.form-submit-wrapper > input {
+	background-image: none;
+	color: #ffffff;
+	text-shadow: none;
+	text-align: center;
+	display: block;
+}
+
+.extra-links-wrapper {
+	margin-top: 20px;		
+	font-family: Roboto,Helvetica,sans-serif;
+}
+
+.auth-wrapper {
+	margin-bottom: 50px;
+}
+
+.form-errors, .form-success {
+    background: none repeat scroll 0 0 #ffd4d4;
+    border: 1px solid #ff8f8f;
+    border-radius: 5px;
+    color: red;
+    margin-bottom: 10px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.form-success {
+    background: none repeat scroll 0 0 #d4ffd4;
+    border: 1px solid #8fff8f;
+    color: green;
+}
+
 @media (min-width: 640px) {
 	.form-wrapper {
 		margin: 50px auto 0;
@@ -50,27 +116,13 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
 
 	.form-field-wrapper {
 		margin-bottom: 20px;
-		background-clip: padding-box;
 	    border-radius: 9px;
-	    background-color: #e1e4e6;
-	    padding: 0 6%;
 	}
 
 	.form-field-wrapper > input {
 		font-size: 20px;
 		height: 58px;
 		line-height: 30px;
-		padding-bottom: 2px;
-		background-color: transparent;
-		border: medium none;
-		box-shadow: none;
-		box-sizing: content-box;
-		color: #32393d;
-		font-family: Roboto,Helvetica,sans-serif;
-		margin: 0;
-		outline: medium none;
-		padding: 0;
-		width: 100%;
 	}
 
 	.form-submit-wrapper {		
@@ -85,48 +137,19 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
 		font-size: 20px;
 		height: 58px;
 		line-height: 30px;
-		padding-bottom: 2px;
-		background-color: transparent;
-		background-image: none;
-		border: medium none;
-		color: #ffffff;
-		font-family: Roboto,Helvetica,sans-serif;
-		text-shadow: none;
-		width: 100%;
-		padding-left: 30%;
-		padding-right: 30%;
 	}
 
 	.extra-links-wrapper {
 		float: left;
-		margin-top: 20px;		
-		font-family: Roboto,Helvetica,sans-serif;
 	}
 
-
-	.form-errors {
-	    background: none repeat scroll 0 0 #ffd4d4;
-	    border: 1px solid #ff8f8f;
+	.form-errors, .form-success  {
 	    border-radius: 9px;
-	    color: red;
 	    margin-bottom: 15px;
-	    padding: 20px;
-	    width: 100%;
-	    text-align: center;
-	}
-	.form-success {
-	    background: none repeat scroll 0 0 #d4ffd4;
-	    border: 1px solid #8fff8f;
-	    border-radius: 9px;
-	    color: green;
-	    margin-bottom: 15px;
-	    padding: 20px;
-	    width: 100%;
-	    text-align: center;
 	}
 
 	.auth-wrapper {
-		margin-bottom: 200px
+		margin-bottom: 200px;
 	}
 
 }
