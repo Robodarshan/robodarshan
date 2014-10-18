@@ -23,11 +23,13 @@
 	{% endif %}
 {% endblock%}
 
-{% if success %}
-<a href="{% url 'accounts:login' %}" title="Login">
-	<div class="form-submit-wrapper">
-	<span style="">Log in</span>
-	</div>
-</a>
-
-{% endif %}
+{% block body %}
+	{{block.super}}
+	{% if success %}
+	<a href="{% url 'accounts:login' %}" title="Login">
+		<div class="form-submit-wrapper">
+		<span style="">Log in</span>
+		</div>
+	</a>
+	{% endif %}
+{% endblock %}
