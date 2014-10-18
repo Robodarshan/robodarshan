@@ -157,6 +157,7 @@ def reset(request):
 				return render(request, 'accounts/reset.html', {'error': 'Link expired.'})
 			else:
 				user.set_password(new_password)
+				user.profile.password_reset_key = "NULL";
 				user.save()
 				return render(request, 'accounts/reset.html', {'success': 'Password reset successfully.'})
 		else:
