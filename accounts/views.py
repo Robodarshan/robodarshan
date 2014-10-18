@@ -3,7 +3,7 @@ import random
 import re
 import uuid
 from django.shortcuts import render
-from accounts.models import becAlumnus, Profile
+from accounts.models import robodarshanMember, Profile
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
@@ -24,12 +24,8 @@ def register(request):
 			form.clean()
 			email = form.cleaned_data['email']
 			password = form.cleaned_data['password']
-			user = becAlumnus.objects.create_user(email, password)
+			user = robodarshanMember.objects.create_user(email, password)
 			user.fullname = form.cleaned_data['fullname']
-			user.nickname = form.cleaned_data['nickname']
-			user.date_of_birth = form.cleaned_data['date_of_birth']
-			user.batch_of = form.cleaned_data['batch_of']
-			user.department = form.cleaned_data['department']
 			# Creat the verification key
 			salt = hashlib.sha1(str(random.random())).hexdigest()[:10]
 			email_verification_key = hashlib.sha1(salt+email).hexdigest()
@@ -123,7 +119,7 @@ def forgot(request):
 		if form.is_valid():
 			email = form.cleaned_data.get('email')
 			try:
-				user = becAlumnus.objects.get(email = email) 
+				user = robodarshanMember.objects.get(email = email) 
 				if user.is_active:
 					mail_subject = 'Password reset'
 					salt = hashlib.sha1(str(random.random())).hexdigest()
@@ -136,7 +132,7 @@ def forgot(request):
 					return render(request, 'accounts/forgot.html', {'success': 'Instructions have been sent to: ' + email})
 				else:
 					return render(request, 'accounts/forgot.html', {'error': 'Your account is not active.'})
-			except becAlumnus.DoesNotExist:
+			except robodarshanMember.DoesNotExist:
 				return render(request, 'accounts/forgot.html', {'error': 'The email id is not registered.'})
 	else:
 		form = forms.ForgotForm()

@@ -1,37 +1,35 @@
 # appname/forms.py
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from accounts.models import becAlumnus
+from accounts.models import robodarshanMember
 from django import forms as django_forms
 
-class becAlumnusCreationForm(UserCreationForm):
+class robodarshanMemberCreationForm(UserCreationForm):
 	"""
 	A form that creates a user, with no privileges, from the given email and
 	password.
 	"""
 
 	def __init__(self, *args, **kargs):
-		super(becAlumnusCreationForm, self).__init__(*args, **kargs)
+		super(robodarshanMemberCreationForm, self).__init__(*args, **kargs)
 		del self.fields['username']
 
 	class Meta:
-		model = becAlumnus
-		fields = ("email", "fullname", "nickname",
-				"date_of_birth", "batch_of", "department",
-				"is_staff", "is_active")
+		model = robodarshanMember
+		fields = ("email", "fullname", "is_staff", "is_active")
 
-class becAlumnusChangeForm(UserChangeForm):
+class robodarshanMemberChangeForm(UserChangeForm):
 	"""A form for updating users. Includes all the fields on
 	the user, but replaces the password field with admin's
 	password hash display field.
 	"""
 
 	def __init__(self, *args, **kargs):
-		super(becAlumnusChangeForm, self).__init__(*args, **kargs)
+		super(robodarshanMemberChangeForm, self).__init__(*args, **kargs)
 		del self.fields['username']
 
 	class Meta:
-		model = becAlumnus
+		model = robodarshanMember
 
 class RegistrationForm(django_forms.Form):
 	"""
@@ -42,22 +40,18 @@ class RegistrationForm(django_forms.Form):
 	email = django_forms.EmailField()
 	password = django_forms.CharField(max_length=100, widget=django_forms.PasswordInput)
 	retype_password = django_forms.CharField(max_length=100, widget=django_forms.PasswordInput)
-	nickname = django_forms.CharField(max_length=50, required=False)
-	date_of_birth = django_forms.DateField()
-	batch_of = django_forms.DateField()
-	department = django_forms.CharField(max_length=100)
-
+	
 	def clean(self):
 		cleaned_data = super(RegistrationForm, self).clean()
 		# check if email exists
 		email = cleaned_data.get("email")
 		try:
-			becAlumnus.objects.get(email= email)
+			robodarshanMember.objects.get(email= email)
 			try:
 				self.errors['email'].append("email already exists.")
 			except KeyError:
 				self.errors['email'] = ["email already exists."]
-		except becAlumnus.DoesNotExist:
+		except robodarshanMember.DoesNotExist:
 			pass
 
 		# check if the passwords match

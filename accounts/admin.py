@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from accounts.models import becAlumnus
-from accounts.forms import becAlumnusChangeForm, becAlumnusCreationForm
+from accounts.models import robodarshanMember
+from accounts.forms import robodarshanMemberChangeForm, robodarshanMemberCreationForm
 
-class becAlumnusAdmin(UserAdmin):
+class robodarshanMemberAdmin(UserAdmin):
     # The forms to add and change user instances
 
     # The fields to be used in displaying the User model.
@@ -24,10 +24,10 @@ class becAlumnusAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2')}
         ),
     )
-    form = becAlumnusChangeForm
-    add_form = becAlumnusCreationForm
-    list_display = ('email', 'fullname', 'nickname', 'is_staff')
-    search_fields = ('email', 'fullname', 'nickname')
+    form = robodarshanMemberChangeForm
+    add_form = robodarshanMemberCreationForm
+    list_display = ('email', 'fullname', 'is_staff')
+    search_fields = ('email', 'fullname')
     ordering = ('email',)
 
-admin.site.register(becAlumnus, becAlumnusAdmin)
+admin.site.register(robodarshanMember, robodarshanMemberAdmin)

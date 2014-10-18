@@ -101,7 +101,7 @@ LOGIN_URL = '/accounts/login/'
 
 # Custom User Model
 
-AUTH_USER_MODEL = 'accounts.becAlumnus'
+AUTH_USER_MODEL = 'accounts.robodarshanMember'
 AUTH_PROFILE_MODULE = 'accounts.Profile'
 
 # Email smtp setup

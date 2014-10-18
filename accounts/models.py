@@ -13,9 +13,9 @@ from accounts.tasks import send_mail_task
 # signal sent when user is created
 user_created = Signal(providing_args=["email"])
 
-# Custom User Manager for bec alumni website
-class becAlumnusManager(BaseUserManager):
-	"""user manager for becAlumnus"""
+# Custom User Manager for robodarshan website
+class robodarshanMemberManager(BaseUserManager):
+	"""user manager for robodarshanMember"""
 	def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
 		"""
 		Creates and saves a User with the given email and password.
@@ -42,16 +42,12 @@ class becAlumnusManager(BaseUserManager):
 		return self._create_user(email, password, True, True, is_active=True, **extra_fields)
 
 
-# Custom User Model for bec alumni website
+# Custom User Model for robodarshan website
 
-class becAlumnus(AbstractBaseUser, PermissionsMixin):
-	"""custor user model for the alumni of Bengal Engineering College"""
+class robodarshanMember(AbstractBaseUser, PermissionsMixin):
+	"""custor user model for Robodarshan website"""
 	email = models.EmailField(max_length=254, unique=True)
 	fullname = models.CharField(max_length=200)
-	nickname = models.CharField(max_length=50, blank=True)
-	date_of_birth = models.DateField(blank=True, null= True)
-	batch_of = models.DateField(blank=True, null=True)
-	department = models.CharField(max_length=100, blank=True)
 	is_staff = models.BooleanField(_('staff status'), default=False,
 		help_text=_('Designates whether the user can log into this admin '
 					'site.'))
@@ -61,7 +57,7 @@ class becAlumnus(AbstractBaseUser, PermissionsMixin):
 	# NOTE: date_joined is the day the user account is created, not the date of joining the institute.
 	date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
-	objects = becAlumnusManager()
+	objects = robodarshanMemberManager()
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELD = ['fullname']
@@ -82,13 +78,10 @@ class becAlumnus(AbstractBaseUser, PermissionsMixin):
 
 	def get_short_name(self):
 		"Returns the nickname for the user."
-		if self.nickname == None or self.nickname == '':
-			if self.fullname:
-				return str(self.fullname).split()[0]
-			else:
-				return "maskman"
+		if self.fullname:
+			return str(self.fullname).split()[0]
 		else:
-			return self.nickname
+			return "maskman"
 
 	def email_user(self, subject, message, from_email=None):
 			"""
@@ -99,6 +92,10 @@ class becAlumnus(AbstractBaseUser, PermissionsMixin):
 # User profile 
 
 class Profile(models.Model):
+	nickname = models.CharField(max_length=50, blank=True)
+	date_of_birth = models.DateField(blank=True, null= True)
+	batch_of = models.DateField(blank=True, null=True)
+	department = models.CharField(max_length=100, blank=True)
 	email_verify_key = models.CharField(max_length=100, blank=True)
 	password_reset_key = models.CharField(max_length=100, blank=True)
 	password_reset_key_timestamp = models.DateTimeField(blank=True, null=True)
@@ -107,14 +104,14 @@ class Profile(models.Model):
 	web_link = models.CharField(max_length=254, blank=True)
 	phone = models.CharField(max_length=100)
 	is_private = models.BooleanField(default=False)
-	user = models.OneToOneField(becAlumnus)
+	user = models.OneToOneField(robodarshanMember)
 	def __unicode__(self):
 		return self.user.email
 
 # create profile when new user is created
 @receiver(user_created)
 def create_profile(sender, **kwargs):
-	user = becAlumnus.objects.get(email=kwargs.get('email'))
+	user = robodarshanMember.objects.get(email=kwargs.get('email'))
 	profile = Profile(user = user)
 	profile.uuid = str(uuid.uuid1())
 	profile.save()
