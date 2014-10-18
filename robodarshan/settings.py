@@ -120,3 +120,6 @@ SITE_ID = 1
 # Celery setup
 BROKER_URL = "django://"
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+
+# Host base url
+HOST_BASE_URL = "http://robodarshan.herokuapp.com/"

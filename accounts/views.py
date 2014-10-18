@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from accounts import forms
 
 from accounts.tasks import send_mail_task
@@ -33,7 +34,7 @@ def register(request):
 			user.profile.save()
 			user.save()
 			mail_subject = 'Account verification'
-			mail_body = u'http://localhost:8000/accounts/verify/' + email_verification_key + '?u=' + user.profile.uuid
+			mail_body = settings.HOST_BASE_URL +  u'accounts/verify/' + email_verification_key + '?u=' + user.profile.uuid
 			send_mail_task.delay( mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
 			return render(request, 'accounts/register.html', {'success': 'Registration Complete. Check your mailbox for instructions to verify your email accout.'})
 		else:
@@ -127,7 +128,7 @@ def forgot(request):
 					password_reset_key = salt + uid
 					user.profile.password_reset_key = password_reset_key
 					user.profile.save()
-					mail_body = u'http://localhost:8000/accounts/reset/?a=' + password_reset_key + '&z=' + user.profile.uuid
+					mail_body = settings.HOST_BASE_URL + u'accounts/reset/?a=' + password_reset_key + '&z=' + user.profile.uuid
 					send_mail_task.delay( mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
 					return render(request, 'accounts/forgot.html', {'success': 'Instructions have been sent to: ' + email})
 				else:
