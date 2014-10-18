@@ -22,3 +22,12 @@
 		<input type="hidden" name="password_reset_key" value="{{password_reset_key}}" />
 	{% endif %}
 {% endblock%}
+
+{% if success %}
+<a href="{% url 'accounts:login' %}" title="Login">
+	<div class="form-submit-wrapper">
+	<span style="">Log in</span>
+	</div>
+</a>
+
+{% endif %}
