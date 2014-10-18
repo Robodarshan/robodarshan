@@ -1,7 +1,89 @@
-{# <a href="{% url 'accounts:profile' %}">Home</a> #}
-<h1> Profile </h1>
+{% extends "main/index.html" %}
 
-Welcome {{user.get_full_name}} <br/>
-Your mail id is: {{user.email}} <br/>
+{% load staticfiles %}
 
-<a href="{% url 'accounts:logout' %}" title='logout' name='logout'> Logout</a>
+{% block content %}
+<div class="container">
+	<h1 style>
+		{{user.get_full_name}}
+	</h1>
+	<ul class="list-unstyled list-inline profile-actions">
+		<li><a href="#">Write a Tutorial</a></li>|
+		<li><a href="#">Post an Event</a></li>|
+		<li><a href="#">Submit a story</a></li>|
+		<li><a href="{% url 'accounts:logout' %}">Logout</a></li>				
+	</ul>
+</div>
+<div class="full-width-line"></div>
+<div class="container">
+	<table class="table table-hover table-responsive profile-info">
+		<tbody>
+			<tr>
+				<td class="profile-info-lable">Email id :</td>
+				<td>{{user.email}}</td>
+			</tr>
+			<tr>
+				<td class="profile-info-lable">Phone :</td>
+				<td>{{user.profile.phone|default:"Not set"}}</td>
+			</tr>
+			<tr>
+				<td class="profile-info-lable">Facebook :</td>
+				<td>{{user.profile.facebook_link|default:"Not set"}}</td>
+			</tr>
+			<tr>
+				<td class="profile-info-lable">Department :</td>
+				<td>{{user.profile.department|default:"Not set"}}</td>
+			</tr>
+			<tr>
+				<td class="profile-info-lable">Batch_of :</td>
+				<td>{{user.profile.batch_of|default:"Not set"}}</td>
+			</tr>
+			<tr>
+				<td class="profile-info-lable">ID :</td>
+				<td>{{user.profile.uuid}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="accounts:profile-edit">
+		<div class="action-button">
+			Edit
+		</div>
+	</a>
+</div>
+{% endblock %}
+
+
+
+
+
+
+<table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>

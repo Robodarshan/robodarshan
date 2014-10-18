@@ -36,8 +36,9 @@
 }
 
 .content-wrapper {
-	margin-top: 50px;
-	margin-bottom: 90px;
+	margin-top: 90px;
+	margin-bottom: 50px;
+    min-height: 500px;
 }
 
 .blog-body {
@@ -105,4 +106,47 @@
     font-size: 30px;
     font-weight: 400;
     text-align: center;
+}
+
+.full-width-line {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-info > tbody > tr > td {
+    font-family: Roboto,Helvetica,sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 30px;
+    vertical-align: middle;
+}
+
+.profile-info .profile-info-lable {
+    font-weight: 500;
+    color: #777
+}
+
+.action-button {
+    background: none repeat scroll 0 0 #008fd5;
+    border-radius: 9px;
+    color: #fff;
+    float: right;
+    padding: 15px 30px;
+    text-decoration: none;
+}
+
+.navbar .logo {
+    display: block;
+    font-family: Roboto,Helvetica,sans-serif;
+    font-size: 50px;
+    font-weight: lighter;
+    text-align: center;
+}
+
+
+@media (min-width: 640px) {
+    .profile-actions {
+        float: right;
+        margin-top: -20px;
+    }
 }

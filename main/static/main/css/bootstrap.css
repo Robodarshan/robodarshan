@@ -996,8 +996,8 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: inherit;
-  font-weight: 500;
+  font-family: Roboto, Helvetica, sans-serif;
+  font-weight: 300;
   line-height: 1.1;
   color: inherit;
 }
@@ -2812,7 +2812,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary {
   color: #fff;
   background-color: #428bca;
-  border-color: #357ebd;
+  border-color: #428bca;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -2821,7 +2821,7 @@ fieldset[disabled] .btn-default.active {
 .open > .dropdown-toggle.btn-primary {
   color: #fff;
   background-color: #3071a9;
-  border-color: #285e8e;
+  border-color: #2d6ca2;
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -2844,7 +2844,7 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
   background-color: #428bca;
-  border-color: #357ebd;
+  border-color: #428bca;
 }
 .btn-primary .badge {
   color: #428bca;
@@ -3770,9 +3770,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   min-height: 90px;
   margin-bottom: 0;
-  border: 0;
-  -webkit-box-shadow: 0 0 5px 0 #555;
-          box-shadow: 0 0 5px 0 #555;
+  border: 1px solid transparent;
 }
 @media (min-width: 768px) {
   .navbar {
