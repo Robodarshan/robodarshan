@@ -13,7 +13,10 @@
 {% block form-target %}{% url "accounts:register" %}{% endblock %}
 
 {% block form-extra-links %}
-	<a href="#"> Terms and Conditions</a><br/>
+	<br/>
+    or<br/>
+    <a href="{% url 'accounts:login' %}">Log in</a>
+
 {% endblock%}
 
 {% block form-submit-label %}Sign Up{% endblock %}
