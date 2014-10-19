@@ -92,17 +92,14 @@ class robodarshanMember(AbstractBaseUser, PermissionsMixin):
 # User profile 
 
 class Profile(models.Model):
-	nickname = models.CharField(max_length=50, blank=True)
-	date_of_birth = models.DateField(blank=True, null= True)
-	batch_of = models.DateField(blank=True, null=True)
+	batch_of = models.CharField(max_length=4, blank=True)
 	department = models.CharField(max_length=100, blank=True)
 	email_verify_key = models.CharField(max_length=100, blank=True)
 	password_reset_key = models.CharField(max_length=100, blank=True)
 	password_reset_key_timestamp = models.DateTimeField(blank=True, null=True)
-	current_city = models.CharField(max_length=100, blank=True)
 	uuid = models.CharField(max_length=100, blank=True)
-	web_link = models.CharField(max_length=254, blank=True)
-	phone = models.CharField(max_length=100)
+	facebook_link = models.CharField(max_length=254, blank=True)
+	phone = models.CharField(max_length=20)
 	is_private = models.BooleanField(default=False)
 	user = models.OneToOneField(robodarshanMember)
 	def __unicode__(self):

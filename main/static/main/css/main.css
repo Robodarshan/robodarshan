@@ -36,8 +36,9 @@
 }
 
 .content-wrapper {
-	margin-top: 50px;
-	margin-bottom: 90px;
+	margin-top: 90px;
+	margin-bottom: 50px;
+    min-height: 500px;
 }
 
 .blog-body {
@@ -106,3 +107,150 @@
     font-weight: 400;
     text-align: center;
 }
+
+.full-width-line {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+
+.navbar .logo {
+    display: block;
+    font-family: Roboto,Helvetica,sans-serif;
+    font-size: 50px;
+    font-weight: lighter;
+    text-align: center;
+}
+
+/* css for profile page */
+
+.profile-info > tbody > tr > td {
+    font-family: Roboto,Helvetica,sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    padding: 30px;
+    vertical-align: middle;
+}
+
+.profile-info .profile-info-lable {
+    font-weight: 500;
+    color: #777
+}
+
+.action-button {
+    background: none repeat scroll 0 0 #008fd5;
+    border-radius: 9px;
+    color: #fff;
+    float: none;
+    padding: 0;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 60px;
+}
+
+.action-button > input {
+    display: inline-block;
+    border: 0;
+    background-color: transparent;
+    background-image: none;
+    width: 100%;
+}
+
+.form-wrapper {
+    margin: 25px auto 0;
+    width: 84.375%;
+    overflow: hidden;
+}
+
+.form-field-wrapper, .form-submit-wrapper {
+    margin-bottom: 10px;
+    background-clip: padding-box;
+    border-radius: 5px;
+    background-color: #e1e4e6;    
+    padding: 5% 0;
+}
+
+.form-field-wrapper > input {
+    background-color: transparent;
+    border: medium none;
+    box-shadow: none;
+    box-sizing: content-box;
+    color: #32393d;
+    font-family: Roboto,Helvetica,sans-serif;
+    margin: 0;
+    outline: medium none;
+    padding: 0;
+    width: 100%;
+}
+
+.form-field-wrapper > select {
+    width: 100%;
+    background-color: transparent;
+    background-image: none;
+    border: 0;
+    display: inline;
+}
+
+.form-errors, .form-success {
+    background: none repeat scroll 0 0 #ffd4d4;
+    border: 1px solid #ff8f8f;
+    border-radius: 5px;
+    color: red;
+    margin-bottom: 10px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.form-success {
+    background: none repeat scroll 0 0 #d4ffd4;
+    border: 1px solid #8fff8f;
+    color: green;
+}
+
+@media (min-width: 640px) {
+    .profile-info > tbody > tr > td {
+        font-size: 20px;
+    }
+
+    .profile-actions {
+        float: right;
+        margin-top: -20px;
+    }
+
+    .action-button {
+        float: right;        
+        min-width: 100px;
+        margin-left: 30px;
+    }
+
+    .form-wrapper {
+        margin: 50px auto 0;
+        width: 400px;
+    }
+
+    .form-field-wrapper {
+        margin-bottom: 20px;
+        border-radius: 9px;
+        padding: 0 6%;
+    }
+
+    .form-field-wrapper > input {
+        font-size: 20px;
+        height: 58px;
+        line-height: 30px;
+    }
+
+    .form-field-wrapper > select{
+        font-size: 20px;
+        height: 58px;
+        line-height: 30px;
+    }
+
+    .form-errors, .form-success  {
+        border-radius: 9px;
+        margin-bottom: 15px;
+    }
+
+}
+
+/* end profile style */
