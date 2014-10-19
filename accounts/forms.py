@@ -3,6 +3,8 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from accounts.models import robodarshanMember
 from django import forms as django_forms
+from django.forms.fields import ChoiceField
+from django.forms.widgets import Select
 
 class robodarshanMemberCreationForm(UserCreationForm):
 	"""
@@ -85,3 +87,24 @@ class ResetForm(django_forms.Form):
 			except KeyError:
 				self.errors['retype_password'] = ["passwords didn't match."]
 		return cleaned_data
+
+
+DEPT_CHOICES = (('Information Technology','Information Technology',),
+				('Computer Science', 'Computer Science',),
+				('Aerospace', 'Aerospace',),
+				('Electronics', 'Electronics',),
+				('Mechanical', 'Mechanical',),
+				('Electrical', 'Electrical',),
+				('Metalurgy', 'Metalurgy',),
+				('Mining','Mining',),
+				('Civil', 'Civil'),
+				('Architecture', 'Architecture')
+				)
+
+BATCH_CHOICES = [('2000', '2000'),('2001', '2001'),('2002', '2002'),('2003', '2003'),('2004', '2004'),('2005', '2005'),('2006', '2006'),('2007', '2007'),('2008', '2008'),('2009', '2009'),('2010', '2010'),('2011', '2011'),('2012', '2012'),('2013', '2013'),('2014', '2014'),('2015', '2015'),('2016', '2016'),('2017', '2017'),('2018', '2018')]
+
+class ProfileEditForm(django_forms.Form):
+	phone = django_forms.CharField(max_length=10, required=False)
+	facebook = django_forms.CharField(max_length=100, required=False)
+	department = django_forms.ChoiceField(required=False, widget=Select, choices=DEPT_CHOICES)
+	batch_of = django_forms.ChoiceField(choices=BATCH_CHOICES, required=False)

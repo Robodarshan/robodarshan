@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from accounts import forms
@@ -105,12 +106,6 @@ def login(request):
 def logout(request):
 	django_logout(request)
 	return HttpResponseRedirect(reverse('accounts:profile'))
-	
-def profile(request):
-	if request.user.is_authenticated():
-		return render(request, 'accounts/profile.html')
-	else:
-		return HttpResponseRedirect(reverse('accounts:login'))
 
 def forgot(request):
 	if request.user.is_authenticated():
@@ -180,3 +175,29 @@ def reset(request):
 					return render(request, 'accounts/reset.html', {'success': 'Invalid key.'})
 		else:
 			return render(request, 'accounts/reset.html', {'error': 'Sorry something went wrong. Ensure the link is correct.'})
+
+
+@login_required
+def profile(request):
+	return render(request, 'accounts/profile.html')
+
+@login_required
+def profile_edit(request):
+	user = request.user
+	if request.method == 'POST':
+		form = forms.ProfileEditForm(request.POST)
+		if form.is_valid():
+			user.profile.phone = form.cleaned_data.get('phone')
+			user.profile.department = form.cleaned_data.get('department')
+			user.profile.facebook_link = form.cleaned_data.get('facebook')
+			user.profile.batch_of = form.cleaned_data.get('batch_of')
+			user.profile.save()
+		return HttpResponseRedirect(reverse('accounts:profile'))
+	else:		
+		initial={}
+		initial['phone'] = user.profile.phone
+		initial['department'] = user.profile.department
+		initial['batch_of'] = user.profile.batch_of
+		initial['facebook'] = user.profile.facebook_link
+		form = forms.ProfileEditForm(initial=initial)
+		return render(request, 'accounts/profile_edit.html', {'form': form})

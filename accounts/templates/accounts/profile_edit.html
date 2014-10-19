@@ -1,0 +1,49 @@
+{% extends "accounts/profile.html" %}
+
+{% load staticfiles %}
+
+{% block profile-info %}
+<div class="container">
+	<form class="Form" action="{% url 'accounts:profile_edit' %}" method="post">
+		{% csrf_token %}
+		{% if error %}
+			<div class="form-errors">
+				{{error}}
+			</div>
+		{% endif %}
+		{% if success %}
+			<div class="form-success">
+				{{success}}
+			</div>
+		{% endif %}
+		<table class="table table-hover table-responsive profile-info">
+			<tbody>
+			{% for field in form %}
+				<tr>
+					<td class="profile-info-lable">{{field.label}} :</td>
+					<td>
+						<div class="form-field-wrapper">
+						<!-- 	<input id="{{ field.auto_id }}" type="{{ field.field.widget.input_type }}" placeholder="{{ field.label }}" name="{{ field.html_name }}" 
+							{% if field.value%}
+							value="{{ field.value }}"
+							{% endif %}
+							/> -->
+							{{field}}
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		<div class="action-button">
+			<input type="submit" value="Save" />
+		</div>
+		<a href="{% url 'accounts:profile' %}">
+			<div class="action-button">
+				Cancle
+			</div>
+		</a>
+	</form>
+</div>
+
+{% endblock %}
