@@ -38,13 +38,18 @@
 				{% if form %}
 					{% block form-input%}
 						{% for field in form %}
-							<div class="form-field-wrapper">
+							<div class="form-field-wrapper 
+								{% if field.errors%}
+									form-error
+								{% endif %}
+							">
 							<input id="{{ field.auto_id }}" type="{{ field.field.widget.input_type }}" placeholder="{{ field.label }}" name="{{ field.html_name }}" 
 							{% if field.value%}
 							value="{{ field.value }}"
 							{% endif %}
 							/>
 							</div>
+							{{field.errors}}
 						{% endfor %}
 					{% endblock %}
 					<div class="hidden-fields">
