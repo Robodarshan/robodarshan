@@ -74,7 +74,9 @@ def verify(request):
 					user.profile.save()
 					user.is_active = True
 					user.save()
-					return render(request, 'accounts/verify.html', {'success': 'successfully verified'})
+					form = forms.LoginForm()
+					templateVars = {'form': form, 'next': reverse('accounts:profile'), 'success' : 'Email verification was successful. You may log in.'}
+					return render(request, 'accounts/login.html', templateVars)
 				else:
 					return render(request, 'accounts/verify.html', {'success': 'invalid verification key'})
 	else:

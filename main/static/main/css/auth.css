@@ -45,6 +45,11 @@ a.logo:hover {
     overflow: hidden;
 }
 
+.form-wrapper .errorlist {
+	color: #aa0000;
+	list-style: none;
+}
+
 .form-field-wrapper, .form-submit-wrapper {
 	margin-bottom: 10px;
 	background-clip: padding-box;
