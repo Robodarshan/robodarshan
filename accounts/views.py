@@ -29,11 +29,11 @@ def register(request):
 			retype_password = form.cleaned_data.get("retype_password")
 			try:
 				robodarshanMember.objects.get(email= email)
-				return render(request, 'accounts/register.html', {'error': 'Email already exists', 'form' : form})
+				return render(request, 'accounts/register.html', {'error': 'Email already exists.', 'form' : form})
 			except robodarshanMember.DoesNotExist:
 				pass
 			if password and retype_password and (password != retype_password):
-				return render(request, 'accounts/register.html', {'error': 'Passwords didn\'t match', 'form' : form})
+				return render(request, 'accounts/register.html', {'error': 'Passwords didn\'t match.', 'form' : form})
 			user = robodarshanMember.objects.create_user(email, password)
 			user.fullname = form.cleaned_data['fullname']
 			# Creat the verification key
@@ -64,7 +64,7 @@ def verify(request):
 		try:
 			user = Profile.objects.get(uuid = uuid).user
 		except Profile.DoesNotExist:
-			return render(request, 'accounts/verify.html', {'error': 'The email address is not registered'})
+			return render(request, 'accounts/verify.html', {'error': 'The email address is not registered.'})
 		else:
 			if user.profile.email_verify_key == 'ACTIVATED':
 				return render(request, 'accounts/verify.html', {'success': 'Your email is already verified. :)'})
@@ -151,7 +151,9 @@ def reset(request):
 		password_reset_key = request.POST.get('password_reset_key', False)
 		if form.is_valid() and uid and password_reset_key:
 			new_password = form.cleaned_data.get('new_password')
-			retype_password = form.cleaned_data.get('retype_password')			
+			retype_password = form.cleaned_data.get('retype_password')
+			if password and retype_password and (password != retype_password):
+				return render(request, 'accounts/reset.html', {'error': 'Passwords didn\'t match.'})
 			try:
 				user = Profile.objects.get(uuid = uid).user
 			except Profile.DoesNotExist:

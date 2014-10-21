@@ -53,17 +53,6 @@ class ForgotForm(django_forms.Form):
 class ResetForm(django_forms.Form):	
 	new_password = django_forms.CharField(max_length=100, widget=django_forms.PasswordInput)
 	retype_password = django_forms.CharField(max_length=100, widget=django_forms.PasswordInput)
-	def clean(self):
-		cleaned_data = super(ResetForm, self).clean()
-		# check if the passwords match
-		password = cleaned_data.get("new_password")
-		retype_password = cleaned_data.get("retype_password")
-		if password and retype_password and (password != retype_password):
-			try:
-				self.errors['retype_password'].append("passwords didn't match.")
-			except KeyError:
-				self.errors['retype_password'] = ["passwords didn't match."]
-		return cleaned_data
 
 
 DEPT_CHOICES = (('Information Technology','Information Technology',),
