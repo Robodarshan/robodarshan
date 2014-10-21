@@ -165,8 +165,11 @@ def reset(request):
 			else:
 				user.set_password(new_password)
 				user.profile.password_reset_key = "NULL";
+				user.profile.save()
 				user.save()
-				return render(request, 'accounts/reset.html', {'success': 'Password reset successfully.'})
+				form = forms.LoginForm()
+				templateVars = {'form': form, 'next': reverse('accounts:profile'), 'success' : 'Password reset was successful. You may log in.'}
+				return render(request, 'accounts/login.html', templateVars)
 		else:
 			return render(request, 'accounts/reset.html', {'error': 'Something went wrong.'})
 	else:
