@@ -24,8 +24,16 @@ def register(request):
 		if form.is_valid():
 			# Create the user
 			form.clean()
-			email = form.cleaned_data['email']
-			password = form.cleaned_data['password']
+			email = form.cleaned_data.get("email")
+			password = form.cleaned_data.get('password')
+			retype_password = form.cleaned_data.get("retype_password")
+			try:
+				robodarshanMember.objects.get(email= email)
+				return render(request, 'accounts/register.html', {'error': 'Email already exists', 'form' : form})
+			except robodarshanMember.DoesNotExist:
+				pass
+			if password and retype_password and (password != retype_password):
+				return render(request, 'accounts/register.html', {'error': 'Passwords didn\'t match', 'form' : form})
 			user = robodarshanMember.objects.create_user(email, password)
 			user.fullname = form.cleaned_data['fullname']
 			# Creat the verification key
@@ -35,7 +43,7 @@ def register(request):
 			user.profile.save()
 			user.save()
 			mail_subject = 'Account verification'
-			mail_body = settings.HOST_BASE_URL +  u'accounts/verify/' + email_verification_key + '?u=' + user.profile.uuid
+			mail_body = settings.HOST_BASE_URL +  u'accounts/verify/' + email_verification_key + '?z=' + user.profile.uuid
 			send_mail_task.delay( mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
 			return render(request, 'accounts/register.html', {'success': 'Registration Complete. Check your mailbox for instructions to verify your email accout.'})
 		else:
@@ -49,7 +57,7 @@ def register(request):
 def verify(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect(reverse('accounts:profile'))
-	uuid = request.GET.get('u', False)
+	uuid = request.GET.get('z', False)
 	email_verification_key = re.search(r'verify/(?P<email_verification_key>[0-9a-f]{40}$)', request.path)
 	if uuid and email_verification_key:	
 		email_verification_key = email_verification_key.groupdict().get('email_verification_key', False)
