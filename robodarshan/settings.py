@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'kombu.transport.django',
-    'djcelery', 
+    'djcelery',
     'accounts',
     'blog',
     'main',
@@ -115,11 +115,11 @@ EMAIL_HOST_PASSWORD = 'rujufhjzhcvevjix'
 
 # Flatpages setup
 SITE_ID = 1
- 
+
 
 # Celery setup
 BROKER_URL = "django://"
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 
 # Host base url
 HOST_BASE_URL = "http://robodarshan.herokuapp.com/"

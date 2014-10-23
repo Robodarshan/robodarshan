@@ -4,5 +4,5 @@ from django.core.urlresolvers import reverse_lazy
 from main import views
 
 urlpatterns = patterns('',
-	url(r'^$', views.home, name= 'home'),
-)
+                       url(r'^$', views.home, name='home'),
+                       )

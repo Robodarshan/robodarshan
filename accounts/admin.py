@@ -3,7 +3,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import robodarshanMember
-from accounts.forms import robodarshanMemberChangeForm, robodarshanMemberCreationForm
+from accounts.forms import robodarshanMemberChangeForm
+from accounts.forms import robodarshanMemberCreationForm
+
 
 class robodarshanMemberAdmin(UserAdmin):
     # The forms to add and change user instances
@@ -22,7 +24,7 @@ class robodarshanMemberAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2')}
-        ),
+         ),
     )
     form = robodarshanMemberChangeForm
     add_form = robodarshanMemberCreationForm
