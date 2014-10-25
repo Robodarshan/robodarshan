@@ -1,2 +1,4 @@
 *.pyc
 static/
+node_modules/
+db.sqlite3

@@ -2,14 +2,19 @@ from django import forms as django_forms
 import bleach
 
 
-class BlogEditForm(django_forms.Form):
+class EventForm(django_forms.Form):
     title = django_forms.CharField(
         max_length=500,
         widget=django_forms.TextInput(attrs={'placeholder': 'Title'}))
-    body = django_forms.CharField(widget=django_forms.Textarea)
+    cover_image_link = django_forms.CharField(max_length=256, required=False)
+    time = django_forms.DateField(widget=django_forms.SplitDateTimeWidget)
+    location = django_forms.CharField(max_length=256)
+    description = django_forms.CharField(widget=django_forms.Textarea)
+    coordinator1 = django_forms.CharField(max_length=256)
+    coordinator2 = django_forms.CharField(max_length=256)
 
     def clean(self):
-        cleaned_data = super(BlogEditForm, self).clean()
+        cleaned_data = super(EventForm, self).clean()
 
         body = cleaned_data.get("body")
 
@@ -18,8 +23,9 @@ class BlogEditForm(django_forms.Form):
                            u'strong', u'em', u'blockquote', u'sub', u'sup',
                            u'iframe']
         white_list_attrs = {
+            'a': ['href', 'title'],
             'img': ['src', 'title'],
-            '*':	['style', 'class'],
+            '*':    ['style', 'class'],
             'iframe': ['src', 'width', 'height',
                        'frameborder', 'allowfullscreen']
         }

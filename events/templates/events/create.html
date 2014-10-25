@@ -1,0 +1,16 @@
+{% extends "accounts/profile.html" %}
+
+{% load staticfiles %}
+
+{% block profile-info %}
+<div class="container">
+	<form class="Form" action="{% url 'events:new' %}" method="post">
+		{% csrf_token %}
+		{{form.as_p}}
+		<div class="action-button">
+			<input type="submit" value="Create" />
+		</div>
+	</form>
+</div>
+
+{% endblock %}
