@@ -2,6 +2,7 @@ import hashlib
 import random
 import re
 import uuid
+import datetime
 from django.shortcuts import render
 from accounts.models import robodarshanMember, Profile
 from django.contrib.auth import authenticate
@@ -42,9 +43,10 @@ def register(request):
             user = robodarshanMember.objects.create_user(email, password)
             user.fullname = form.cleaned_data['fullname']
             # Creat the verification key
-            salt = hashlib.sha1(str(random.random())).hexdigest()[:10]
-            email_verification_key = hashlib.sha1(salt + email).hexdigest()
+            email_verification_key = hashlib.sha1(
+                str(random.random())).hexdigest()
             user.profile.email_verify_key = email_verification_key
+            user.profile.password_reset_key_timestamp = datetime.datetime.now()
             user.profile.save()
             user.save()
             mail_subject = 'Account verification'
@@ -84,6 +86,10 @@ def verify(request):
             if user.profile.email_verify_key == 'ACTIVATED':
                 return render(request, 'accounts/verify.html',
                               {'success': 'Your email is already verified. :)'
+                               })
+            elif (datetime.datetime.now() - user.profile.password_reset_key_timestamp).seconds > 120:
+                return render(request, 'accounts/verify.html',
+                              {'error': 'Link has expired. Sign up again.'
                                })
             else:
                 if user.profile.email_verify_key == email_verification_key:
@@ -163,6 +169,7 @@ def forgot(request):
                     uid = hashlib.sha1(str(uuid.uuid4())).hexdigest()
                     password_reset_key = salt + uid
                     user.profile.password_reset_key = password_reset_key
+                    user.profile.password_reset_key_timestamp = datetime.datetime.now()
                     user.profile.save()
                     mail_body = settings.HOST_BASE_URL + \
                         u'accounts/reset/?a=' + \
@@ -244,6 +251,10 @@ def reset(request):
                               {'error': 'Sorry something went wrong. \
                               Ensure the link is correct.'})
             if user.profile.password_reset_key == 'NULL':
+                return render(request,
+                              'accounts/reset.html',
+                              {'error': 'Link expired.'})
+            elif (datetime.datetime.now() - user.profile.password_reset_key_timestamp).seconds > 120:
                 return render(request,
                               'accounts/reset.html',
                               {'error': 'Link expired.'})
