@@ -35,6 +35,7 @@ class robodarshanMemberChangeForm(UserChangeForm):
 
     class Meta:
         model = robodarshanMember
+        fields = '__all__'
 
 
 class RegistrationForm(django_forms.Form):
