@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'djcelery',
     'accounts',
     'blog',
+    'events',
     'main',
 )
 

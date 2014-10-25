@@ -18,4 +18,5 @@ urlpatterns = patterns('',
                            include('accounts.urls', namespace='accounts')),
                        url(r'^stories/',
                            include('blog.urls', namespace='blog')),
+                       url(r'^events/', include('events.urls', namespace='events')),
                        )
