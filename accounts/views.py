@@ -2,6 +2,7 @@ import hashlib
 import random
 import re
 import uuid
+from datetime import timedelta
 from django.shortcuts import render
 from accounts.models import robodarshanMember, Profile
 from django.contrib.auth import authenticate
@@ -13,7 +14,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.utils import timezone
 from accounts import forms
-from accounts.tasks import send_mail_task
+from accounts.tasks import send_mail_task, delete_email_task
 
 
 def register(request):
@@ -48,11 +49,16 @@ def register(request):
             user.profile.password_reset_key_timestamp = timezone.now()
             user.profile.save()
             user.save()
+            uid = user.profile.uuid
             mail_subject = 'Account verification'
             mail_body = settings.HOST_BASE_URL + u'accounts/verify/' + \
-                email_verification_key + '?z=' + user.profile.uuid
-            send_mail_task.delay(
-                mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
+                email_verification_key + '?z=' + uid
+            send_mail_task.delay(mail_subject,
+                                 mail_body,
+                                 'ghoshbinayak@gmail.com',
+                                 [email])
+            tomorrow = timezone.now() + timedelta(days=settings.VERIFY_TIMEOUT)
+            delete_email_task.apply_async((uid,), eta=tomorrow)
             return render(request,
                           'accounts/register.html',
                           {'success': 'Registration Complete.\
@@ -86,7 +92,7 @@ def verify(request):
                 return render(request, 'accounts/verify.html',
                               {'success': 'Your email is already verified. :)'
                                })
-            elif (timezone.now() - user.profile.password_reset_key_timestamp).seconds > 120:
+            elif (timezone.now() - user.profile.password_reset_key_timestamp).days > settings.VERIFY_TIMEOUT:
                 return render(request, 'accounts/verify.html',
                               {'error': 'Link has expired. Sign up again.'
                                })
@@ -178,6 +184,8 @@ def forgot(request):
                         mail_body,
                         'ghoshbinayak@gmail.com',
                         [email])
+                    tomorrow = timezone.now() + timedelta(seconds=120)
+                    delete_email_task.apply_async((uid,), eta=tomorrow)
                     return render(request,
                                   'accounts/forgot.html',
                                   {'success': 'Instructions \
@@ -253,7 +261,7 @@ def reset(request):
                 return render(request,
                               'accounts/reset.html',
                               {'error': 'Link expired.'})
-            elif (timezone.now()- user.profile.password_reset_key_timestamp).seconds > 120:
+            elif (timezone.now() - user.profile.password_reset_key_timestamp).seconds > settings.RESET_TIMEOUT:
                 return render(request,
                               'accounts/reset.html',
                               {'error': 'Link expired.'})
