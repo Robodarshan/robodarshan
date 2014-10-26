@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from blog import forms
 from blog.models import story
-from blog.tasks import add
 
 
 def posts(request):
@@ -63,10 +62,3 @@ def edit(request):
     return render(request,
                   'blog/editor.html',
                   {'post': 'edit page', 'form': form, 'id': story_id})
-
-
-def test(request):
-    result = add.delay(5, 6)
-    while(not result.ready()):
-        pass
-    return render(request, 'blog/test.html', {'message': result.get()})

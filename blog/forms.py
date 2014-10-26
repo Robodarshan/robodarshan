@@ -18,6 +18,7 @@ class BlogEditForm(django_forms.Form):
                            u'strong', u'em', u'blockquote', u'sub', u'sup',
                            u'iframe']
         white_list_attrs = {
+            'a': ['href', 'target', 'title'],
             'img': ['src', 'title'],
             '*':	['style', 'class'],
             'iframe': ['src', 'width', 'height',
