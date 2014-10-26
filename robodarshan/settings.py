@@ -129,3 +129,10 @@ CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 
 # Host base url
 HOST_BASE_URL = "http://robodarshan.herokuapp.com/"
+
+
+# Time before email is removed from database if not activated (in days)
+VERIFY_TIMEOUT = 2
+
+# Time before the forget password link expires (in seconds)
+RESET_TIMEOUT = 7200

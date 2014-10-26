@@ -2,7 +2,7 @@ import hashlib
 import random
 import re
 import uuid
-import datetime
+from datetime import timedelta
 from django.shortcuts import render
 from accounts.models import robodarshanMember, Profile
 from django.contrib.auth import authenticate
@@ -12,9 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.utils import timezone
 from accounts import forms
-
-from accounts.tasks import send_mail_task
+from accounts.tasks import send_mail_task, delete_email_task
 
 
 def register(request):
@@ -46,14 +46,19 @@ def register(request):
             email_verification_key = hashlib.sha1(
                 str(random.random())).hexdigest()
             user.profile.email_verify_key = email_verification_key
-            user.profile.password_reset_key_timestamp = datetime.datetime.now()
+            user.profile.password_reset_key_timestamp = timezone.now()
             user.profile.save()
             user.save()
+            uid = user.profile.uuid
             mail_subject = 'Account verification'
             mail_body = settings.HOST_BASE_URL + u'accounts/verify/' + \
-                email_verification_key + '?z=' + user.profile.uuid
-            send_mail_task.delay(
-                mail_subject, mail_body, 'ghoshbinayak@gmail.com', [email])
+                email_verification_key + '?z=' + uid
+            send_mail_task.delay(mail_subject,
+                                 mail_body,
+                                 'ghoshbinayak@gmail.com',
+                                 [email])
+            tomorrow = timezone.now() + timedelta(days=settings.VERIFY_TIMEOUT)
+            delete_email_task.apply_async((uid,), eta=tomorrow)
             return render(request,
                           'accounts/register.html',
                           {'success': 'Registration Complete.\
@@ -87,7 +92,7 @@ def verify(request):
                 return render(request, 'accounts/verify.html',
                               {'success': 'Your email is already verified. :)'
                                })
-            elif (datetime.datetime.now() - user.profile.password_reset_key_timestamp).seconds > 120:
+            elif (timezone.now() - user.profile.password_reset_key_timestamp).days > settings.VERIFY_TIMEOUT:
                 return render(request, 'accounts/verify.html',
                               {'error': 'Link has expired. Sign up again.'
                                })
@@ -169,7 +174,7 @@ def forgot(request):
                     uid = hashlib.sha1(str(uuid.uuid4())).hexdigest()
                     password_reset_key = salt + uid
                     user.profile.password_reset_key = password_reset_key
-                    user.profile.password_reset_key_timestamp = datetime.datetime.now()
+                    user.profile.password_reset_key_timestamp = timezone.now()
                     user.profile.save()
                     mail_body = settings.HOST_BASE_URL + \
                         u'accounts/reset/?a=' + \
@@ -179,6 +184,8 @@ def forgot(request):
                         mail_body,
                         'ghoshbinayak@gmail.com',
                         [email])
+                    tomorrow = timezone.now() + timedelta(seconds=120)
+                    delete_email_task.apply_async((uid,), eta=tomorrow)
                     return render(request,
                                   'accounts/forgot.html',
                                   {'success': 'Instructions \
@@ -254,7 +261,7 @@ def reset(request):
                 return render(request,
                               'accounts/reset.html',
                               {'error': 'Link expired.'})
-            elif (datetime.datetime.now() - user.profile.password_reset_key_timestamp).seconds > 120:
+            elif (timezone.now() - user.profile.password_reset_key_timestamp).seconds > settings.RESET_TIMEOUT:
                 return render(request,
                               'accounts/reset.html',
                               {'error': 'Link expired.'})
