@@ -30,3 +30,4 @@ class BlogEditForm(django_forms.Form):
         cleaned_data['body'] = body
 
         return cleaned_data
+
