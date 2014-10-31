@@ -15,14 +15,14 @@ def posts(request):
 
 
 @login_required
-def edit(request):
+def new(request):
     # Handle image uploads for the post.
     if request.is_ajax():
         json_response = "{"
         for uploaded_file in request.FILES.getlist('photo'):
             # create folder with story id
             if not os.path.exists(settings.MEDIA_ROOT + request.POST.get('story_id')):
-                os.mkdir(settings.MEDIA_ROOT + request.POST['story_id'])
+                os.makedirs(settings.MEDIA_ROOT + request.POST['story_id'])
             if os.path.exists(settings.MEDIA_ROOT + request.POST['story_id'] + '/' + uploaded_file.name):
                 uploaded_file.name = '1' + uploaded_file.name
             with open(settings.MEDIA_ROOT + request.POST['story_id'] + '/' + uploaded_file.name, 'w') as destination:
@@ -62,3 +62,55 @@ def edit(request):
     return render(request,
                   'blog/editor.html',
                   {'post': 'edit page', 'form': form, 'id': story_id})
+
+
+@login_required
+def edit(request):
+    # Handle changes
+    if request.method == 'POST':
+        form = forms.BlogEditForm(request.POST)
+        story_id = request.POST.get('story_id', None)
+        if form.is_valid():
+            form.clean()
+            title = form.cleaned_data['title']
+            body = form.cleaned_data['body']
+            try:
+                article = story.objects.get(uuid=story_id)
+            except story.DoesNotExist:
+                return render(request,
+                              'blog/editor.html',
+                              {'error': 'Thats an untold story..'})
+            if request.user != article.author:
+                return render(request,
+                              'blog/editor.html',
+                              {'error': 'You don\'t seem to have the keys to the forbiden palace'})
+            article.title = title
+            article.body = body
+            article.timestamp = timezone.now()
+            article.save()
+            return render(request, 'blog/index.html', {'posts': [article]})
+        else:
+            return render(request,
+                          'blog/editor.html',
+                          {'error': 'some thing went wrong',
+                           'form': form, 'id': story_id})
+    # Display the edit form with story
+    else:
+        story_id = request.GET.get('id', None)
+        try:
+            article = story.objects.get(uuid=story_id)
+        except story.DoesNotExist:
+            return render(request,
+                          'blog/editor.html',
+                          {'error': 'Thats an untold story..'})
+        if request.user != article.author:
+            return render(request,
+                          'blog/editor.html',
+                          {'error': 'You don\'t seem to have the keys to the forbiden palace'})
+        initial = {}
+        initial['title'] = article.title
+        initial['body'] = article.body
+        form = forms.BlogEditForm(initial=initial)
+        return render(request,
+                      'blog/editor.html',
+                      {'form': form, 'id': story_id})

@@ -19,6 +19,12 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-8">			
 			<h2> Tell a story.. </h2>
+			{% if error %}
+					<div class="form-errors">
+						{{error}}
+					</div>
+			{% endif %}
+			{% if form %}
 			<form action="{% url 'blog:edit' %}" method="post">
 				{% csrf_token %}				
 				<input type='hidden' name='story_id' value='{{id}}' />
@@ -37,13 +43,14 @@
 					</a>
 				</div>
 			</form>
-			<form  id='photo_uploader' action="{% url 'blog:edit' %}" method="post">
+			<form  id='photo_uploader' action="{% url 'blog:new' %}" method="post">
 				{% csrf_token %}
 				<input type='hidden' name='story_id' value='{{id}}' />
 				<p>Insert Image:</p>
 				<input id='photos' class="btn_negative btn_left" type='file' name='photo' multiple='multiple' />
 				<input class="btn_negative btn_positive btn_right" type="submit" value="Upload" />
 			</form>
+			{% endif %}
 		</div>
 		<div class="col-md-2"></div>
 	</div>

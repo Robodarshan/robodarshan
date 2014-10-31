@@ -5,5 +5,6 @@ from blog import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.posts, name='posts'),
+                       url(r'^new/$', views.new, name='new'),                       
                        url(r'^edit/$', views.edit, name='edit'),
                        )
