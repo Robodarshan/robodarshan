@@ -16,7 +16,7 @@ $(document).ready(function(){
         $("#id_body").tinymce({
                 script_url : '/static/blog/tinymce/tinymce.min.js',
                 execcommand_callback: 'myCustomExecCommandHandler',
-                plugins : 'autoresize, link, code, photo_uploader',
+                plugins : 'autoresize, link, embed_youtube, photo_uploader',
                 autoresize_min_height: '200',
                 skin: 'custom',
                 menubar : false,
@@ -48,7 +48,7 @@ $(document).ready(function(){
                                 );    
                                 ed.on('keyup', enable_submit);
                         },
-                toolbar: "heading bold italic strikethrough link unlink bullist numlist outdent indent blockquote subscript superscript photo_uploader code",
+                toolbar: "heading bold italic strikethrough link unlink bullist numlist outdent indent blockquote subscript superscript photo_uploader embed_youtube",
         });
         
         $("#id_title").keyup(enable_submit);

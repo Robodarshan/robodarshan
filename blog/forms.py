@@ -19,7 +19,7 @@ class BlogEditForm(django_forms.Form):
                            u'iframe']
         white_list_attrs = {
             'a': ['href', 'target', 'title'],
-            'img': ['src', 'title', 'alt'],
+            'img': ['src', 'title', 'width', 'height'],
             '*':	['style', 'class'],
             'iframe': ['src', 'width', 'height',
                        'frameborder', 'allowfullscreen']
@@ -30,3 +30,4 @@ class BlogEditForm(django_forms.Form):
         cleaned_data['body'] = body
 
         return cleaned_data
+

@@ -11,11 +11,12 @@
 	<body>
 		{% for story in posts %}
     		<h2>{{ story.title }}</h2>
-    		<i>{{ story.author }}</i>
+    		<strong>{{ story.author }}</strong>
+    		<i>{{ story.timestamp }}</i>
     		<div>{{ story.body | safe}}</div>
-
+    		<a href="/stories/edit/?id={{story.uuid}}">edit</a>
     		<br/><hr/><br/>
-		{% endfor %}
+		{% endfor %}	
 		
 	</body>
 </html>
