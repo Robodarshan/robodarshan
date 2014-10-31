@@ -25,7 +25,7 @@
 					</div>
 			{% endif %}
 			{% if form %}
-			<form action="{% url 'blog:edit' %}" method="post">
+			<form action="{% url 'blog:new' %}" method="post">
 				{% csrf_token %}				
 				<input type='hidden' name='story_id' value='{{id}}' />
 				<div id="input_error"> 
