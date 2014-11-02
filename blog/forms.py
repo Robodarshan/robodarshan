@@ -1,5 +1,6 @@
 from django import forms as django_forms
 import bleach
+import re
 
 
 class BlogEditForm(django_forms.Form):
@@ -14,15 +15,23 @@ class BlogEditForm(django_forms.Form):
         body = cleaned_data.get("body")
 
         # clean with python bleach
+        def filter_src(name, value):
+            if name in ('width', 'height', 'frameborder', 'allowfullscreen'):
+                return True
+            if name == 'src':
+                exp = r'^//www\.youtube\.com/embed/.*$'
+                match = re.search(exp, value)
+                if match:
+                    return True
+            return False
+
         white_list_tags = [u'h2', u'p', u'a', u'img', u'ol', u'ul', u'li',
                            u'strong', u'em', u'blockquote', u'sub', u'sup',
                            u'iframe']
         white_list_attrs = {
             'a': ['href', 'target', 'title'],
-            'img': ['src', 'title', 'width', 'height'],
-            '*':	['style', 'class'],
-            'iframe': ['src', 'width', 'height',
-                       'frameborder', 'allowfullscreen']
+            'img': ['alt', 'title', 'width', 'height', 'src'],
+            'iframe': filter_src
         }
         white_list_styles = ['padding', 'padding-left']
         body = bleach.clean(
@@ -30,4 +39,3 @@ class BlogEditForm(django_forms.Form):
         cleaned_data['body'] = body
 
         return cleaned_data
-

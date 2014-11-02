@@ -23,20 +23,23 @@
      * @return {string|boolean}
      */
     function youtubeId(url) {
-        var match = url.match((/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/));
+        var match = url.match((/(youtu\.be\/|[?&]v=)([^&]+)/));
         return (match && match[2].length === 11) ? match[2] : false;
     }
 
     function convertUrl(url) {
         var id = youtubeId(url);
         if (url && id) {
-            url = "//www.youtube.com/" + "embed/" + id;
+            return "//www.youtube.com/embed/" + id;
         }
-        return url;
+        return false;
     }
 
     function dataToHtml(url) {
-        return "<iframe width=\"560\" height=\"315\" src=\"" + url + "\" frameborder=\"0\" allowfullscreen></iframe>"  
+        if(url){
+            return "<iframe width=\"560\" height=\"315\" src=\"" + url + "\" frameborder=\"0\" allowfullscreen></iframe>"  
+        }
+        return "<p> Sorry, wrong url. </p>";
     }
 
     function insert() {
