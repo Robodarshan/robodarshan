@@ -3,7 +3,7 @@ tinymce.PluginManager.add('embed_youtube', function(editor, url) {
         editor.windowManager.open({
             title: "Embed Youtube video",
             file: url + "/youtube.html",
-            width: 500,
+            width: 600,
             height: 500,
             inline: 1,
             resizable: false,
