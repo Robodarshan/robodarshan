@@ -10,3 +10,4 @@ class story(models.Model):
     timestamp = models.DateTimeField()
     permalink = models.CharField(max_length=256)
     author = models.ForeignKey(robodarshanMember)
+    published = models.BooleanField(default=False)

@@ -1,3 +1,9 @@
 from django.contrib import admin
+from blog.models import story
 
-# Register your models here.
+
+class storyAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(story, storyAdmin)
