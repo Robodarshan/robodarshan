@@ -1,0 +1,14 @@
+{% load staticfiles %}
+<html>
+<body>
+{% for event in events %}
+	<h2>{{ event.title }}</h2>
+	{{ event.cover_image_link }}
+	<strong>{{ event.coordinator1 }}</strong>
+	<em>{{ event.time }}</em>
+	<div>{{ event.description | safe}}</div>
+	<br/><hr/><br/>
+	{% endfor %}	
+
+</body>
+</html>
