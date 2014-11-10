@@ -37,5 +37,12 @@ class storyAdmin(admin.ModelAdmin):
         return obj.author.get_full_name()
     author_name.short_description = 'Author'
 
+    class Media:
+        js = [
+            'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js',
+            'blog/tinymce/jquery.tinymce.min.js',
+            'blog/editor.js',
+        ]
+
 
 admin.site.register(story, storyAdmin)

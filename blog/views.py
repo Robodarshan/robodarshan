@@ -39,6 +39,13 @@ def new(request):
     if request.method == 'POST':
         form = forms.BlogEditForm(request.POST)
         story_id = request.POST['story_id']
+        try:
+            article = story.objects.get(uuid=story_id)
+            return render(request,
+                          'blog/editor.html',
+                          {'error': 'Naah.. heard that, tell something new.'})
+        except story.DoesNotExist:
+            pass
         if form.is_valid():
             form.clean()
             title = form.cleaned_data['title']
@@ -55,13 +62,14 @@ def new(request):
         else:
             return render(request,
                           'blog/editor.html',
-                          {'post': 'some thing went wrong',
+                          {'error': 'some thing went wrong',
+                           'action': 'new',
                            'form': form, 'id': story_id})
     story_id = uuid.uuid4().get_hex()
     form = forms.BlogEditForm()
     return render(request,
                   'blog/editor.html',
-                  {'post': 'edit page', 'form': form, 'id': story_id})
+                  {'form': form, 'id': story_id, 'action': 'new', })
 
 
 @login_required
@@ -93,6 +101,7 @@ def edit(request):
             return render(request,
                           'blog/editor.html',
                           {'error': 'some thing went wrong',
+                           'action': 'edit',
                            'form': form, 'id': story_id})
     # Display the edit form with story
     else:
@@ -113,4 +122,4 @@ def edit(request):
         form = forms.BlogEditForm(initial=initial)
         return render(request,
                       'blog/editor.html',
-                      {'form': form, 'id': story_id})
+                      {'form': form, 'id': story_id, 'action': 'edit', })
