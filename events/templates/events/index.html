@@ -5,7 +5,7 @@
 	<h2>{{ event.title }}</h2>
 	{{ event.cover_image_link }}
 	<strong>{{ event.coordinator1 }}</strong>
-	<em>{{ event.time }}</em>
+	<em>{{ event.time |date:"d/m/Y h:i A"}}</em>
 	<div>{{ event.description | safe}}</div>
 	<br/><hr/><br/>
 	{% endfor %}	

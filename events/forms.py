@@ -13,7 +13,11 @@ class EventPostForm(django_forms.Form):
         max_length=256,
         widget=django_forms.TextInput(attrs={'placeholder': 'Event Poster Link.'}))
     time = django_forms.DateTimeField(
-        widget=django_forms.TextInput(attrs={'placeholder': 'Time of the Event.'}))
+        input_formats=['%d/%m/%Y %I:%M %p',
+                       '%d/%m/%Y'],
+        widget=django_forms.DateTimeInput(attrs={'placeholder': 'Time of the Event.',
+                                                 'data-date-format': 'DD/MM/YYYY hh:mm A'
+                                                 }))
     location = django_forms.CharField(
         max_length=256,
         widget=django_forms.TextInput(attrs={'placeholder': 'Location of the Event.'}))
