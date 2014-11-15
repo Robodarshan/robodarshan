@@ -67,17 +67,69 @@ def new(request):
             return render(request,
                           'events/editor.html',
                           {'post': 'some thing went wrong',
+                           'action': 'new',
                            'form': form, 'id': event_id})
     event_id = uuid.uuid4().get_hex()
     form = EventPostForm()
     return render(request,
                   'events/editor.html',
-                  {'post': 'edit page', 'form': form, 'id': event_id})
+                  {'post': 'edit page',
+                   'action': 'new',
+                   'form': form, 'id': event_id})
 
 
 @login_required
 def edit(request):
-    pass
+    # Handle changes
+    if request.method == 'POST':
+        form = forms.EventPostForm(request.POST)
+        story_id = request.POST.get('story_id', None)
+        if form.is_valid():
+            form.clean()
+            title = form.cleaned_data['title']
+            body = form.cleaned_data['body']
+            try:
+                article = story.objects.get(uuid=story_id)
+            except story.DoesNotExist:
+                return render(request,
+                              'blog/editor.html',
+                              {'error': 'Thats an untold story..'})
+            if request.user != article.author:
+                return render(request,
+                              'blog/editor.html',
+                              {'error': 'You don\'t seem to have the keys to the forbiden palace'})
+            article.title = title
+            article.body = body
+            article.timestamp = timezone.now()
+            article.save()
+            return render(request, 'blog/index.html', {'posts': [article]})
+        else:
+            return render(request,
+                          'blog/editor.html',
+                          {'error': 'some thing went wrong',
+                           'action': 'edit',
+                           'form': form, 'id': story_id})
+    # Display the edit form with story
+    else:
+        event_id = request.GET.get('id', None)
+        try:
+            this_event = event.objects.get(uuid=event_id)
+        except event.DoesNotExist:
+            return render(request,
+                          'events/editor.html',
+                          {'error': 'Event doesn\'t exist..'})
+        if request.user not in [event.coordinator1, event.coordinator2]:
+            return render(request,
+                          'blog/editor.html',
+                          {'error': 'You don\'t seem to have the keys to the forbiden palace'})
+        initial = {}
+        initial['title'] = event.title
+        initial['description'] = event.description
+        form = forms.EventPostForm(initial=initial)
+        return render(request,
+                      'blog/editor.html',
+                      {'form': form, 'id': event_id, 'action': 'edit', })
+
 
 
 @login_required
@@ -89,4 +141,3 @@ def delete(request):
 def show(request):
     events = event.objects.all()
     return render(request, 'events/index.html', {'events': events})
-

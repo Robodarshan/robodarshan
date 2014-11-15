@@ -3,6 +3,8 @@ from accounts.models import robodarshanMember
 
 
 class event(models.Model):
+
+    """an event instance"""
     uuid = models.CharField(max_length=32, primary_key=True)
     timestamp = models.DateTimeField()  # will be added automatically
     title = models.CharField(max_length=256)
@@ -24,3 +26,12 @@ class event(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class approved_event(models.Model):
+
+    """approved_event stores the list of events currently displayed"""
+    f_uuid = models.CharField(max_length=32)  # uuid of first instance
+    c_uuid = models.ForeignKey(event)  # uuid of current event instance
+    l_uuid = models.ForeignKey(event) # uuid of latest event instance
+    timestamp = models.DateTimeField()  # time last updated
