@@ -28,10 +28,13 @@ class event(models.Model):
         return self.title
 
 
-class approved_event(models.Model):
+class event_list(models.Model):
 
     """approved_event stores the list of events currently displayed"""
-    f_uuid = models.CharField(max_length=32)  # uuid of first instance
-    c_uuid = models.ForeignKey(event)  # uuid of current event instance
-    l_uuid = models.ForeignKey(event) # uuid of latest event instance
-    timestamp = models.DateTimeField()  # time last updated
+    f_uuid = models.CharField(max_length=32, primary_key=True)  # uuid of first instance
+    # uuid of current event instance
+    c_uuid = models.ForeignKey(event, related_name='approved_event_current')
+    # uuid of latest event instance
+    l_uuid = models.ForeignKey(event, related_name='approved_event_latest')
+    published = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now=True)  # time last updated

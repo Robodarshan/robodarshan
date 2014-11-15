@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from accounts.models import robodarshanMember
 from events.models import event
+from events.models import event_list
 
 
 @login_required
@@ -54,13 +55,20 @@ def new(request):
             )
             volunteer1 = form.cleaned_data.get('volunteer1', None)
             volunteer2 = form.cleaned_data.get('volunteer2', None)
+            location = form.cleaned_data.get('location', None)
             if volunteer1:
                 volunteer1 = robodarshanMember.objects.get(email=volunteer1)
                 new_event.volunteer1 = volunteer1
             if volunteer2:
                 volunteer2 = robodarshanMember.objects.get(email=volunteer2)
                 new_event.volunteer2 = volunteer2
+            if location:
+                new_event.location = location
             new_event.save()
+            entry = event_list(f_uuid=event_id,
+                               c_uuid=new_event,
+                               l_uuid=new_event)
+            entry.save()
             return render(request, 'events/index.html',
                           {'events': [new_event]})
         else:
@@ -82,54 +90,86 @@ def new(request):
 def edit(request):
     # Handle changes
     if request.method == 'POST':
-        form = forms.EventPostForm(request.POST)
-        story_id = request.POST.get('story_id', None)
+        form = EventPostForm(request.POST)
+        event_id = request.POST.get('event_id', None)
         if form.is_valid():
             form.clean()
             title = form.cleaned_data['title']
-            body = form.cleaned_data['body']
+            description = form.cleaned_data['description']
+            time = form.cleaned_data['time']
+            coordinator1 = request.user
+            coordinator2 = robodarshanMember.objects.get(
+                email=form.cleaned_data['second_coordinator'])
             try:
-                article = story.objects.get(uuid=story_id)
-            except story.DoesNotExist:
+                requested_event = event_list.objects.get(f_uuid=event_id)
+            except event_list.DoesNotExist:
                 return render(request,
-                              'blog/editor.html',
-                              {'error': 'Thats an untold story..'})
-            if request.user != article.author:
+                              'events/editor.html',
+                              {'error': 'Sorry.. cannot find the event.'})
+            if request.user not in [event_list.c_uuid.coordinator1, event_list.c_uuid.coordinator2]:
                 return render(request,
-                              'blog/editor.html',
+                              'events/editor.html',
                               {'error': 'You don\'t seem to have the keys to the forbiden palace'})
-            article.title = title
-            article.body = body
-            article.timestamp = timezone.now()
-            article.save()
-            return render(request, 'blog/index.html', {'posts': [article]})
+            # generate new uuid
+            new_uuid = uuid.uuid4().get_hex()
+            new_event = event(
+                uuid=new_uuid,
+                title=title,
+                description=description,
+                coordinator1=coordinator1,
+                coordinator2=coordinator2,
+                time=time,
+                timestamp=timezone.now(),
+            )
+            volunteer1 = form.cleaned_data.get('volunteer1', None)
+            volunteer2 = form.cleaned_data.get('volunteer2', None)
+            location = form.cleaned_data.get('location', None)
+            if volunteer1:
+                volunteer1 = robodarshanMember.objects.get(email=volunteer1)
+                new_event.volunteer1 = volunteer1
+            if volunteer2:
+                volunteer2 = robodarshanMember.objects.get(email=volunteer2)
+                new_event.volunteer2 = volunteer2
+            if location:
+                new_event.location = location
+            new_event.save()
+            requested_event.l_uuid = new_uuid
+            requested_event.save()
+            return render(request, 'events/index.html', {'posts': [new_event]})
         else:
             return render(request,
                           'blog/editor.html',
                           {'error': 'some thing went wrong',
                            'action': 'edit',
-                           'form': form, 'id': story_id})
+                           'form': form, 'id': event_id})
     # Display the edit form with story
     else:
         event_id = request.GET.get('id', None)
         try:
-            this_event = event.objects.get(uuid=event_id)
-        except event.DoesNotExist:
+            requested_event = event_list.objects.get(f_uuid=event_id)
+            requested_event = requested_event.c_uuid
+        except event_list.DoesNotExist:
             return render(request,
                           'events/editor.html',
                           {'error': 'Event doesn\'t exist..'})
-        if request.user not in [event.coordinator1, event.coordinator2]:
+        if request.user not in [requested_event.coordinator1, requested_event.coordinator2]:
             return render(request,
-                          'blog/editor.html',
+                          'events/editor.html',
                           {'error': 'You don\'t seem to have the keys to the forbiden palace'})
         initial = {}
-        initial['title'] = event.title
-        initial['description'] = event.description
-        form = forms.EventPostForm(initial=initial)
+        initial['title'] = requested_event.title
+        initial['description'] = requested_event.description
+        initial['time'] = requested_event.time
+        initial['volunteer1'] = requested_event.volunteer1
+        initial['volunteer2'] = requested_event.volunteer2
+        if request.user == requested_event.coordinator1:
+            initial['second_coordinator'] = requested_event.coordinator2
+        else:
+            initial['second_coordinator'] = requested_event.coordinator1
+        form = EventPostForm(initial=initial)
         return render(request,
-                      'blog/editor.html',
+                      'events/editor.html',
                       {'form': form, 'id': event_id, 'action': 'edit', })
-
 
 
 @login_required
