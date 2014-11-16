@@ -48,20 +48,26 @@
 					{{ form.time.errors}}
 					{{ form.time }}
 					{{ form.location.errors}}
-					{{ form.location }}
+					{{ form.location }}					
+					{{ form.description.errors}}
 					<div id="tinymce-wrapper">
 						{{ form.description }}
 					</div>
+					{{ form.second_coordinator.errors}}
 					{{ form.second_coordinator }}
-					{{ form.volunteer1 }}
+					{{ form.volunteer1.errors}}
+					{{ form.volunteer1 }}					
+					{{ form.volunteer2.errors}}
 					{{ form.volunteer2 }}
 				</div>
-				<div id="button_wrapper">
-					<input id="submit_button" class="btn_negative btn_positive btn_right" type="submit" value="Submit" />
-					<a href="{% url 'accounts:profile' %}">
-						<button class="btn_negative btn_left" type="button" >Cancle</button>
-					</a>
+				<div class="action-button">
+					<input id="submit_button" type="submit" value="Submit" />
 				</div>
+				<a href="{% url 'accounts:profile' %}">
+					<div class="action-button">
+						Cancle
+					</div>
+				</a>
 			</form>			
 			{% if action == "new" %}
 			<form  id='photo_uploader' action="{% url 'events:new' %}" method="post">
@@ -74,17 +80,13 @@
 				<input id='photos' class="btn_negative btn_left" type='file' name='photo' multiple='multiple' />
 				<input class="btn_negative btn_positive btn_right" type="submit" value="Upload" />
 			</form>
-			{% endif %}
-			{% if action == "new" %}
 			<form  id='poster_uploader' action="{% url 'events:new' %}" method="post">
-			{% else %}
-			<form  id='poster_uploader' action="{% url 'events:edit' %}" method="post">
-			{% endif %}
 				{% csrf_token %}
 				<input type='hidden' name='event_id' value='{{id}}' />
-				<input id='poster' class="btn_negative btn_left" type='file' name='photo'/>
+				<input id='poster' type='file' name='photo'/>
 				<input type="submit" value="Upload" />
-			</form>
+			</form>			
+			{% endif %}
 		</div>
 		<div class="col-md-2"></div>
 	</div>

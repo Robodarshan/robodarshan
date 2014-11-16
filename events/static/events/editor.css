@@ -63,7 +63,7 @@
     overflow: hidden;
 }
 
-input {
+#input_wrapper > input {
     font-size: 20px;
     background-color: transparent;
     border: medium none;
@@ -82,6 +82,11 @@ input {
     background-color: #e1e4e6;
     padding: 0 6%;
 }
+
+input:-webkit-autofill {
+    background-color: white !important;
+}
+
 
 #tinymce-wrapper {
     border: 2px solid #e1e4e6;

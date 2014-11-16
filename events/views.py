@@ -56,6 +56,7 @@ def new(request):
             volunteer1 = form.cleaned_data.get('volunteer1', None)
             volunteer2 = form.cleaned_data.get('volunteer2', None)
             location = form.cleaned_data.get('location', None)
+            cover_image_link = form.cleaned_data.get('cover_image_link', None)
             if volunteer1:
                 volunteer1 = robodarshanMember.objects.get(email=volunteer1)
                 new_event.volunteer1 = volunteer1
@@ -64,6 +65,8 @@ def new(request):
                 new_event.volunteer2 = volunteer2
             if location:
                 new_event.location = location
+            if cover_image_link:
+                new_event.cover_image_link = cover_image_link
             new_event.save()
             entry = event_list(f_uuid=event_id,
                                c_uuid=new_event,
@@ -81,8 +84,7 @@ def new(request):
     form = EventPostForm()
     return render(request,
                   'events/editor.html',
-                  {'post': 'edit page',
-                   'action': 'new',
+                  {'action': 'new',
                    'form': form, 'id': event_id})
 
 
@@ -124,6 +126,7 @@ def edit(request):
             volunteer1 = form.cleaned_data.get('volunteer1', None)
             volunteer2 = form.cleaned_data.get('volunteer2', None)
             location = form.cleaned_data.get('location', None)
+            cover_image_link = form.cleaned_data.get('cover_image_link', None)
             if volunteer1:
                 volunteer1 = robodarshanMember.objects.get(email=volunteer1)
                 new_event.volunteer1 = volunteer1
@@ -132,6 +135,8 @@ def edit(request):
                 new_event.volunteer2 = volunteer2
             if location:
                 new_event.location = location
+            if cover_image_link:
+                new_event.cover_image_link = cover_image_link
             new_event.save()
             requested_event.l_uuid = new_uuid
             requested_event.save()
@@ -139,8 +144,7 @@ def edit(request):
         else:
             return render(request,
                           'blog/editor.html',
-                          {'error': 'some thing went wrong',
-                           'action': 'edit',
+                          {'action': 'edit',
                            'form': form, 'id': event_id})
     # Display the edit form with story
     else:
@@ -159,6 +163,8 @@ def edit(request):
         initial = {}
         initial['title'] = requested_event.title
         initial['description'] = requested_event.description
+        initial['location'] = requested_event.location
+        initial['cover_image_link'] = requested_event.cover_image_link
         initial['time'] = requested_event.time
         initial['volunteer1'] = requested_event.volunteer1
         initial['volunteer2'] = requested_event.volunteer2
@@ -179,5 +185,5 @@ def delete(request):
 
 @login_required
 def show(request):
-    events = event.objects.all()
+    events = event_list.objects.all()
     return render(request, 'events/index.html', {'events': events})

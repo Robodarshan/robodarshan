@@ -7,6 +7,7 @@ var success = function(response) {
                                         });
                 $("#adding_poster").hide();
                 $("#add_poster").show();
+                enable_submit();
         }
          
 };
@@ -29,17 +30,22 @@ $('#add_poster').click( function(){
 $("#poster_uploader").change(upload_phoster);
 
 var enable_submit = function() {
-        if($("#id_title").prop('value') != "" && tinymce.activeEditor.getContent() != "") {
+        if($("#id_title").prop('value') != "" 
+                && tinymce.activeEditor.getContent() != ""
+                && $("#id_time").prop('value') != "" 
+                && $("#id_cover_image_link").prop('value') != "" 
+                && $("#id_second_coordinator").prop('value') != "" 
+                ) {
                 $("#submit_button").removeAttr('disabled');
-                console.log('enabled');
         }
         else {
                 $("#submit_button").attr('disabled', 'disabled');
-                console.log('disabled');
         }
 }
 
 $(document).ready(function(){
+        var poster = $("#id_cover_image_link").val();
+        $("#form-background").css({"background-image": "url(" + poster + ")",});
         $("#photo_uploader").hide();
         $("#poster_uploader").hide();
         $("#id_cover_image_link").hide();
@@ -85,5 +91,7 @@ $(document).ready(function(){
                 toolbar: "heading bold italic strikethrough link unlink bullist numlist outdent indent blockquote subscript superscript photo_uploader embed_youtube",
         });
         
-        $("#id_title").keyup(enable_submit);
+        $("#id_title").on('input', enable_submit);
+        $("#id_time").on('input', enable_submit);
+        $("#id_second_coordinator").on('input', enable_submit);
 });
