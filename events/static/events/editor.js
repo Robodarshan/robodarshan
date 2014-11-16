@@ -56,7 +56,7 @@ $(document).ready(function(){
         $("#id_description").tinymce({
                 script_url : '/static/blog/tinymce/tinymce.min.js',
                 execcommand_callback: 'myCustomExecCommandHandler',
-                plugins : 'autoresize, link, embed_youtube, photo_uploader',
+                plugins : 'link, embed_youtube, photo_uploader',
                 autoresize_min_height: '200',
                 skin: 'custom',
                 menubar : false,

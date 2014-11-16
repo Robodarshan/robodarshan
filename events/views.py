@@ -2,6 +2,7 @@ from django.shortcuts import render
 from events.forms import EventPostForm
 import uuid
 import os
+import logging
 from django.utils import timezone
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -108,7 +109,7 @@ def edit(request):
                 return render(request,
                               'events/editor.html',
                               {'error': 'Sorry.. cannot find the event.'})
-            if request.user not in [event_list.c_uuid.coordinator1, event_list.c_uuid.coordinator2]:
+            if request.user not in [requested_event.c_uuid.coordinator1, requested_event.c_uuid.coordinator2]:
                 return render(request,
                               'events/editor.html',
                               {'error': 'You don\'t seem to have the keys to the forbiden palace'})
@@ -138,12 +139,12 @@ def edit(request):
             if cover_image_link:
                 new_event.cover_image_link = cover_image_link
             new_event.save()
-            requested_event.l_uuid = new_uuid
+            requested_event.l_uuid = new_event
             requested_event.save()
-            return render(request, 'events/index.html', {'posts': [new_event]})
+            return render(request, 'events/index.html', {'events': [new_event]})
         else:
             return render(request,
-                          'blog/editor.html',
+                          'events/editor.html',
                           {'action': 'edit',
                            'form': form, 'id': event_id})
     # Display the edit form with story
@@ -165,7 +166,7 @@ def edit(request):
         initial['description'] = requested_event.description
         initial['location'] = requested_event.location
         initial['cover_image_link'] = requested_event.cover_image_link
-        initial['time'] = requested_event.time
+        initial['time'] = requested_event.time.strftime("%d/%m/%Y %I:%M %p")
         initial['volunteer1'] = requested_event.volunteer1
         initial['volunteer2'] = requested_event.volunteer2
         if request.user == requested_event.coordinator1:
