@@ -17,7 +17,8 @@
 {% endblock%}
 
 {% block profile-info %}
-<div class="container">
+<div class="container" id="form-wrapper">
+	<div id="form-background"></div>
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">			
@@ -38,6 +39,7 @@
 				<div id="input_wrapper">
 				<div id="add_poster_wrapper">
 					<span class="glyphicon glyphicon-picture" id="add_poster"></span>
+					<span class="glyphicon glyphicon-refresh" id="adding_poster"></span>
 				</div>
 					{{ form.cover_image_link.errors}}
 					{{ form.cover_image_link }}
