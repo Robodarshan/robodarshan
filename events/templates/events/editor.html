@@ -69,11 +69,7 @@
 					</div>
 				</a>
 			</form>			
-			{% if action == "new" %}
 			<form  id='photo_uploader' action="{% url 'events:new' %}" method="post">
-			{% else %}
-			<form  id='photo_uploader' action="{% url 'events:edit' %}" method="post">
-			{% endif %}
 				{% csrf_token %}
 				<input type='hidden' name='event_id' value='{{id}}' />
 				<p>Insert Image:</p>

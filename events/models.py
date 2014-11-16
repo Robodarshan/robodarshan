@@ -31,7 +31,8 @@ class event(models.Model):
 class event_list(models.Model):
 
     """approved_event stores the list of events currently displayed"""
-    f_uuid = models.CharField(max_length=32, primary_key=True)  # uuid of first instance
+    # uuid of first instance
+    f_uuid = models.CharField(max_length=32, primary_key=True)
     # uuid of current event instance
     c_uuid = models.ForeignKey(event, related_name='approved_event_current')
     # uuid of latest event instance
