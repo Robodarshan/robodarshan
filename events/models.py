@@ -6,6 +6,7 @@ class event(models.Model):
 
     """an event instance"""
     uuid = models.CharField(max_length=32, primary_key=True)
+    f_uuid = models.CharField(max_length=32)  # if the full histoy is needed
     timestamp = models.DateTimeField()  # will be added automatically
     title = models.CharField(max_length=256)
     cover_image_link = models.CharField(max_length=256)

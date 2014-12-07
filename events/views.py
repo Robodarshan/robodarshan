@@ -47,6 +47,7 @@ def new(request):
                 email=form.cleaned_data['second_coordinator'])
             new_event = event(
                 uuid=event_id,
+                f_uuid=event_id,
                 title=title,
                 description=description,
                 coordinator1=coordinator1,
@@ -117,6 +118,7 @@ def edit(request):
             new_uuid = uuid.uuid4().get_hex()
             new_event = event(
                 uuid=new_uuid,
+                f_uuid=event_id,
                 title=title,
                 description=description,
                 coordinator1=coordinator1,
