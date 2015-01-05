@@ -3,12 +3,10 @@ MarkupSafe==0.18
 Pillow==2.3.0
 Pygments==1.6
 SecretStorage==2.0.0
-UniConvertor==1.1.4
 adium-theme-ubuntu==0.3.4
 apt-xapian-index==0.45
 argparse==1.2.1
 astroid==1.1.1
-bzr==2.7.0dev1
 ccsm==0.9.11.3
 chardet==2.0.1
 colorama==0.2.5
