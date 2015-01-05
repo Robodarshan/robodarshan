@@ -3,8 +3,6 @@ MarkupSafe==0.18
 Pillow==2.3.0
 Pygments==1.6
 SecretStorage==2.0.0
-Twisted-Core==13.2.0
-Twisted-Web==13.2.0
 UniConvertor==1.1.4
 adium-theme-ubuntu==0.3.4
 apt-xapian-index==0.45
