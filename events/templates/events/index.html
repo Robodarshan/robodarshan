@@ -1,0 +1,15 @@
+{% load staticfiles %}
+<html>
+<body>
+{% for event in events %}
+	<h2>{{ event.l_uuid.title }}</h2>
+	{{ event.l_uuid.cover_image_link }}
+	<strong>{{ event.l_uuid.coordinator1 }}</strong>
+	<em>{{ event.l_uuid.time |date:"d/m/Y h:i A"}}</em>
+	<div>{{ event.l_uuid.description | safe}}</div>
+	<a href="/events/edit/?id={{event.f_uuid}}">edit</a>
+	<br/><hr/><br/>
+{% endfor %}	
+
+</body>
+</html>

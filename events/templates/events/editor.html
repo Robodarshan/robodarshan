@@ -1,0 +1,91 @@
+{% extends "accounts/profile.html" %}
+
+{% load staticfiles %}
+
+{% block css %}	
+<link rel="stylesheet" type="text/css" href="{% static 'events/editor.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'events/bootstrap-datetimepicker.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script src="{% static 'blog/jquery.form.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'blog/tinymce/jquery.tinymce.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'events/editor.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'events/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'events/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock%}
+
+{% block profile-info %}
+<div class="container" id="form-wrapper">
+	<div id="form-background"></div>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">			
+			<h2> Organise an event.. </h2>
+			{% if error %}
+			<div class="form-errors">
+				{{error}}
+			</div>
+			{% endif %}
+			{% if form %}			
+			{% if action == "new" %}
+			<form action="{% url 'events:new' %}" method="post">
+			{% else %}
+			<form action="{% url 'events:edit' %}" method="post">
+			{% endif %}
+				{% csrf_token %}				
+				<input type='hidden' name='event_id' value='{{id}}' />
+				<div id="input_wrapper">
+				<div id="add_poster_wrapper">
+					<span class="glyphicon glyphicon-picture" id="add_poster"></span>
+					<span class="glyphicon glyphicon-refresh" id="adding_poster"></span>
+				</div>
+					{{ form.cover_image_link.errors}}
+					{{ form.cover_image_link }}
+					{{ form.title.errors}}
+					{{ form.title }}
+					{{ form.time.errors}}
+					{{ form.time }}
+					{{ form.location.errors}}
+					{{ form.location }}					
+					{{ form.description.errors}}
+					<div id="tinymce-wrapper">
+						{{ form.description }}
+					</div>
+					{{ form.second_coordinator.errors}}
+					{{ form.second_coordinator }}
+					{{ form.volunteer1.errors}}
+					{{ form.volunteer1 }}					
+					{{ form.volunteer2.errors}}
+					{{ form.volunteer2 }}
+				</div>
+				<div class="action-button">
+					<input id="submit_button" type="submit" value="Submit" />
+				</div>
+				<a href="{% url 'accounts:profile' %}">
+					<div class="action-button">
+						Cancle
+					</div>
+				</a>
+			</form>			
+			<form  id='photo_uploader' action="{% url 'events:new' %}" method="post">
+				{% csrf_token %}
+				<input type='hidden' name='event_id' value='{{id}}' />
+				<p>Insert Image:</p>
+				<input id='photos' class="btn_negative btn_left" type='file' name='photo' multiple='multiple' />
+				<input class="btn_negative btn_positive btn_right" type="submit" value="Upload" />
+			</form>
+			<form  id='poster_uploader' action="{% url 'events:new' %}" method="post">
+				{% csrf_token %}
+				<input type='hidden' name='event_id' value='{{id}}' />
+				<input id='poster' type='file' name='photo'/>
+				<input type="submit" value="Upload" />
+			</form>			
+			{% endif %}
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,3 +1,8 @@
+/* chrome autofill style fix */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
 .nav-adjust-margin{
 	margin-top: 90px;
 }
@@ -153,6 +158,10 @@
     background-color: transparent;
     background-image: none;
     width: 100%;
+}
+
+.action-button > input:disabled {
+    opacity: 0.5;
 }
 
 .form-wrapper {

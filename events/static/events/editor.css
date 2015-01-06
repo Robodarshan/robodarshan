@@ -1,0 +1,128 @@
+.btn_negative {
+    background: none repeat scroll 0 0 #9da6af;
+    border-color: #9da6af;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+    cursor: pointer;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 10px 5px;
+    text-decoration: none;
+}
+
+.btn_positive {
+    background: none repeat scroll 0 0 #529ecc;
+    color: #fff;
+}
+
+.btn_positive:disabled {
+    color: #71bdeb;
+}
+
+.btn_right {
+    float: right;
+}
+
+.btn_left {
+    float: left;
+}
+
+#form-wrapper {
+    position: relative;
+}
+
+#form-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: none;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+}
+
+#input_wrapper {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+#button_wrapper {
+    margin-top: 10px;
+}
+
+#photo_uploader {
+    display: block;
+    clear: both;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+#input_wrapper > input {
+    font-size: 20px;
+    background-color: transparent;
+    border: medium none;
+    box-shadow: none;
+    box-sizing: content-box;
+    color: #32393d;
+    font-family: Roboto,Helvetica,sans-serif;
+    margin: 0;
+    outline: medium none;
+    width: 88%;
+    height: 58px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    background-clip: padding-box;
+    border-radius: 5px;
+    background-color: #e1e4e6;
+    padding: 0 6%;
+}
+
+input:-webkit-autofill {
+    background-color: white !important;
+}
+
+
+#tinymce-wrapper {
+    border: 2px solid #e1e4e6;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#add_poster_wrapper {
+    color: #aeaeaf;
+    font-size: 3em;
+    text-align: center;
+}
+
+#add_poster:hover {
+    color: #1a1a1a;
+    cursor: pointer;
+}
+
+#adding_poster {
+    display: none;
+    -webkit-animation: scaleout 1.0s infinite ease-in-out;
+    animation: scaleout 1.0s infinite ease-in-out;
+}
+
+@-webkit-keyframes scaleout {
+    0% { -webkit-transform: rotate(0deg) }
+    100% { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes scaleout {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    } 
+    100% {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+    }
+}
